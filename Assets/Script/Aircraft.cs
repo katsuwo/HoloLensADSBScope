@@ -33,6 +33,18 @@ namespace Aircraft {
 		[SerializeField]
 		public double originLongitude = 0.0;
 
+		[SerializeField]
+		public double originAltitude = 0.0;
+
+		[SerializeField]
+		public float world_x = 0.0f;
+
+		[SerializeField]
+		public float world_y = 0.0f;
+
+		[SerializeField]
+		public float world_alt = 0.0f;
+
 
 		[SerializeField]
 		public GameObject gameObj = null;
@@ -40,21 +52,28 @@ namespace Aircraft {
 		private void Awake() {
 		}
 
-		public void setOriginPointWithCoordinate(double latitude, double longitude) {
+		public void setOriginPointWithCoordinate(double latitude, double longitude, double altitude) {
 			this.originLatitude = latitude;
 			this.originLongitude = longitude;
+			this.originAltitude = altitude;
 		}
 
-		public void setPositionWithCoordinate(double latitude, double longitude) {
+		public void setPositionWithCoordinate(double latitude, double longitude, double altitude) {
 			this.latitude = latitude;
 			this.longitude = longitude;
-			this.gameObj.transform.position = new Vector3((float)this.latitude, 0.0f, (float)this.longitude);
+			this.altitude = altitude;
+			this.setWorldPosition();
 			this.gameObj.SetActive(true);
 		}
 
 		public void setWorldPosition() {
 			var dir = this.getDirection(this.latitude, this.longitude);
-			var distance = this.getDistance(this.latitude, this.longitude) / 1000.0;
+			var distance = this.getDistance(this.latitude, this.longitude) / 10000.0;
+			this.world_x = (float)(distance * rad2deg(System.Math.Sin(deg2rad(dir))));
+			this.world_y = (float)(distance * rad2deg(System.Math.Cos(deg2rad(dir))));
+			this.world_alt = (float)((this.altitude * 0.33) - this.originAltitude) / 100.0f;		
+			this.gameObj.transform.position = new Vector3(this.world_x, this.world_alt, this.world_y);
+
 		}
 
 		public double getDistance(double latitude, double longitude) {

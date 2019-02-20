@@ -12,6 +12,7 @@ public class NetworkClient : MonoBehaviour {
 	Dictionary<string, Aircraft.Aircraft> aircrafts = new Dictionary<string, Aircraft.Aircraft>();
 	double current_lng = 139.2976628;
 	double current_lat = 35.7979133;
+	double current_alt = 172;
 
 	// Use this for initialization
 	void Start() {
@@ -45,7 +46,7 @@ public class NetworkClient : MonoBehaviour {
 					if (!this.aircrafts.ContainsKey(icao)) {
 						var newac = new Aircraft.Aircraft();
 						newac.icao = icao;
-						newac.setOriginPointWithCoordinate(current_lat, current_lng);
+						newac.setOriginPointWithCoordinate(current_lat, current_lng,current_alt);
 						newac.gameObj = this.makeGameObject();
 						aircrafts.Add(icao, newac);
 					}
@@ -53,13 +54,17 @@ public class NetworkClient : MonoBehaviour {
 					Aircraft.Aircraft ac = this.aircrafts[icao];
 					ac.callsign = (string)tmpDic["callsign"];
 					try {
-						ac.setPositionWithCoordinate((double)tmpDic["latitude"] * 100, (double)tmpDic["longitude"] * 100);
-						Debug.Log($"{ac.icao}");
+						var tmpLatitude = (double)tmpDic["latitude"];
+						var tmpLongitude = (double)tmpDic["longitude"];
+						var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
+						ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
+						Debug.Log($"POSITION SET:{ac.icao}");
 					}
 					catch (System.InvalidCastException e) {
 						ac.latitude = 0;
 						ac.longitude = 0;
 						ac.altitude = 0;
+						Debug.Log($"ERR:{ac.icao}");
 					}
 				}
 			}
@@ -67,7 +72,7 @@ public class NetworkClient : MonoBehaviour {
 	}
 
 	public GameObject makeGameObject() {
-		GameObject obj = GameObject.Find("Cube_original");
+		GameObject obj = GameObject.Find("Cube_Original");
 		GameObject newobj = Instantiate(obj, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
 		return newobj;
 	}
