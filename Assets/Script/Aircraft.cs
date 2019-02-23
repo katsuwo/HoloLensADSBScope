@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace Aircraft {
 	[System.Serializable]
@@ -47,7 +49,13 @@ namespace Aircraft {
 
 
 		[SerializeField]
-		public GameObject gameObj = null;
+		public GameObject bodyObject { get; set; } = null;
+
+		[SerializeField]
+		public GameObject labelObject{ get; set; } = null;
+
+		[SerializeField]
+		public GameObject targetBox { get; set; } = null;
 
 		private void Awake() {
 		}
@@ -62,18 +70,27 @@ namespace Aircraft {
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.altitude = altitude;
-			this.setWorldPosition();
-			this.gameObj.SetActive(true);
+			this.bodyObject.SetActive(true);
 		}
 
 		public void setWorldPosition() {
+			//			if (this.latitude == latitude && this.longitude == longitude) return;
 			var dir = this.getDirection(this.latitude, this.longitude);
-			var distance = this.getDistance(this.latitude, this.longitude) / 10000.0;
+			var distance = this.getDistance(this.latitude, this.longitude) /1000.0;
 			this.world_x = (float)(distance * rad2deg(System.Math.Sin(deg2rad(dir))));
 			this.world_y = (float)(distance * rad2deg(System.Math.Cos(deg2rad(dir))));
-			this.world_alt = (float)((this.altitude * 0.33) - this.originAltitude) / 100.0f;		
-			this.gameObj.transform.position = new Vector3(this.world_x, this.world_alt, this.world_y);
+			this.world_alt = (float)((this.altitude * 0.33) - this.originAltitude);		
+			this.bodyObject.transform.position = new Vector3(this.world_x, this.world_alt, this.world_y);
+			this.setLabelPosition();
+		}
 
+		public void setLabelPosition() {
+			Text text = this.labelObject.GetComponent<Text>();
+			Image targetBox = this.targetBox.GetComponent<Image>();
+			RectTransform rt = text.GetComponent<RectTransform>();
+			rt.position = RectTransformUtility.WorldToScreenPoint(Camera.main , this.bodyObject.transform.position);
+			RectTransform rt2 = targetBox.GetComponent<RectTransform>();
+			rt2.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.bodyObject.transform.position);
 		}
 
 		public double getDistance(double latitude, double longitude) {
@@ -104,7 +121,5 @@ namespace Aircraft {
 		public double rad2deg(double radian) {
 			return 180 * radian / System.Math.PI;
 		}
-
 	}
-
 }

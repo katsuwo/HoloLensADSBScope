@@ -436,11 +436,17 @@
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\globalgamemanagers.assets">
       <PackagePath>Data\globalgamemanagers.assets</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\resources.assets">
+      <PackagePath>Data\resources.assets</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\sharedassets0.assets">
       <PackagePath>Data\sharedassets0.assets</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\level0.resS">
       <PackagePath>Data\level0.resS</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\resources.assets.resS">
+      <PackagePath>Data\resources.assets.resS</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\sharedassets0.assets.resS">
       <PackagePath>Data\sharedassets0.assets.resS</PackagePath>
@@ -456,9 +462,6 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\bin\x86\Release\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Assembly-CSharp.dll">
-      <PackagePath>Assembly-CSharp.dll</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.TilemapModule.dll">
       <PackagePath>UnityEngine.TilemapModule.dll</PackagePath>
@@ -621,6 +624,9 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\GLTFSerializationUWP.dll">
       <PackagePath>GLTFSerializationUWP.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Assembly-CSharp.dll">
+      <PackagePath>Assembly-CSharp.dll</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\bin\x86\Release\Core\HoloADSBScope.exe">
       <PackagePath>HoloADSBScope.exe</PackagePath>

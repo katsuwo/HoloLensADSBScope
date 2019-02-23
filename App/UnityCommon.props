@@ -1,6 +1,9 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
+        <UnityWSASolutionName>HoloADSBScope</UnityWSASolutionName>
+        <UnityWSASolutionDir>C:\Users\katsu\Work\HoloADSBScope\App\</UnityWSASolutionDir>
+        <UnityProjectDir>C:\Users\katsu\Work\HoloADSBScope\</UnityProjectDir>
         <UnityWSAPlayerDir>C:\Program Files\Unity-2018.3.4f1\Editor\Data\PlaybackEngines\MetroSupport\</UnityWSAPlayerDir>
-        <UnityWSAToolsDir>$(SolutionDir)Unity\Tools\</UnityWSAToolsDir>
+        <UnityWSAToolsDir>$(UnityWSASolutionDir)Unity\Tools\</UnityWSAToolsDir>
     </PropertyGroup>
 </Project>

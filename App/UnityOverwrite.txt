@@ -5,11 +5,12 @@
 # Write a line equal to 'overwrite-all' (without quotes) to overwrite everything (preserved accross builds)
 # Write a line equal to 'keep-all' (without quotes) to keep files regardless their modification (preserved accross builds)
 # Default behavior is to never overwrite files
-HoloADSBScope.sln: 86DDDDA66CA1C2CD8D19F8766A305B2D
+HoloADSBScope.sln: 8EB48B3222C368330EB470A34780078E
+GeneratedProjects\UWP\Assembly-CSharp\project.json: 1D02BC64BAC0D041019673A1C4C51737
 HoloADSBScope\App.cs: F64B23BC83571D781EE6CFB9A7D66634
-HoloADSBScope\HoloADSBScope.csproj: CA30196592F64C896DEFCB5B12C5C6F4
+HoloADSBScope\HoloADSBScope.csproj: D914E1B5DB2972A56B8EBFE917C85BA6
 HoloADSBScope\HoloADSBScope.csproj.user: BEFB8AC4886C4CFDD3C68445D6F19B04
-HoloADSBScope\Package.appxmanifest: C655EDC028B72F21EFD884BF2F0829EF
+HoloADSBScope\Package.appxmanifest: 64F0CF7008F928631B68E76F58CE75D3
 HoloADSBScope\project.json: 1D02BC64BAC0D041019673A1C4C51737
 HoloADSBScope\Assets\SplashScreen.scale-200.png: A85C1D7624B6902CF8CEBD6F0200A826
 HoloADSBScope\Assets\Square150x150Logo.scale-200.png: E02834B4A5DFB97FF8E212C1CACBB084
