@@ -57,15 +57,22 @@ namespace Aircraft {
 		[SerializeField]
 		public GameObject targetBox { get; set; } = null;
 
+
+		public GameObject canvas { get; set; } = null;
+
 		private void Awake() {
 		}
 
+
+		//setUser's position with latitude and longitude
 		public void setOriginPointWithCoordinate(double latitude, double longitude, double altitude) {
 			this.originLatitude = latitude;
 			this.originLongitude = longitude;
 			this.originAltitude = altitude;
 		}
 
+
+		//set position of Aircraft with latitude and longitude
 		public void setPositionWithCoordinate(double latitude, double longitude, double altitude) {
 			this.latitude = latitude;
 			this.longitude = longitude;
@@ -73,26 +80,36 @@ namespace Aircraft {
 			this.bodyObject.SetActive(true);
 		}
 
+		// set Unity's world position from latitude and longitude
 		public void setWorldPosition() {
-			//			if (this.latitude == latitude && this.longitude == longitude) return;
 			var dir = this.getDirection(this.latitude, this.longitude);
 			var distance = this.getDistance(this.latitude, this.longitude) /1000.0;
+
 			this.world_x = (float)(distance * rad2deg(System.Math.Sin(deg2rad(dir))));
 			this.world_y = (float)(distance * rad2deg(System.Math.Cos(deg2rad(dir))));
-			this.world_alt = (float)((this.altitude * 0.33) - this.originAltitude);		
+			this.world_alt = (float)((this.altitude * 0.33) - this.originAltitude);
 			this.bodyObject.transform.position = new Vector3(this.world_x, this.world_alt, this.world_y);
 			this.setLabelPosition();
 		}
 
 		public void setLabelPosition() {
+			RectTransform canvasRt = canvas.GetComponent<RectTransform>();
+
 			Text text = this.labelObject.GetComponent<Text>();
 			Image targetBox = this.targetBox.GetComponent<Image>();
-			RectTransform rt = text.GetComponent<RectTransform>();
-			rt.position = RectTransformUtility.WorldToScreenPoint(Camera.main , this.bodyObject.transform.position);
-			RectTransform rt2 = targetBox.GetComponent<RectTransform>();
-			rt2.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.bodyObject.transform.position);
+			RectTransform textRt = text.GetComponent<RectTransform>();
+			RectTransform targetBoxRt =  targetBox.GetComponent<RectTransform>();
+
+			Vector2 screenPoint;
+			Vector2 localPoint;
+
+			screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main , this.bodyObject.transform.position);
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRt, screenPoint, Camera.main, out localPoint);
+			textRt.localPosition = localPoint;
+			targetBoxRt.localPosition = localPoint;
 		}
 
+		//calculate distance from user's position to aircraft 
 		public double getDistance(double latitude, double longitude) {
 			var lat1 = deg2rad(this.originLatitude);
 			var lng1 = deg2rad(this.originLongitude);
@@ -104,6 +121,13 @@ namespace Aircraft {
 			return r * 2 * System.Math.Asin(System.Math.Sqrt(System.Math.Pow(System.Math.Sin(avelat), 2) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * System.Math.Pow(System.Math.Sin(avelng), 2)));
 		}
 
+		public void setTextInfo() {
+			var uiText = this.labelObject.GetComponent<Text>();
+			uiText.text = $"{this.callsign}\n{this.altitude}\n{this.icao}";
+		}
+
+
+		//calculate direction from user's position to aircraft 
 		public double getDirection(double latitude, double longitude) {
 			var y1 = deg2rad(this.originLatitude);
 			var x1 = deg2rad(this.originLongitude);

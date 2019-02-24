@@ -14,11 +14,12 @@ public class NetworkClient : MonoBehaviour {
 	double current_lng = 139.2976628;
 	double current_lat = 35.7979133;
 	double current_alt = 172;
+	private GameObject myCanvas;
 
 	// Use this for initialization
 	void Start() {
+		myCanvas = GameObject.Find("Canvas");
 		StartCoroutine(getText());
-
 	}
 
 	// Update is called once per frame
@@ -49,9 +50,10 @@ public class NetworkClient : MonoBehaviour {
 				foreach (KeyValuePair<string, object> kvp in items as Dictionary<string, object>) {
 					var tmpDic = (IDictionary)Json.Deserialize(kvp.Value as string);
 					string icao = (string)tmpDic["icao"];
-
+	//				if (icao != "8626CC") continue;
 					if (!this.aircrafts.ContainsKey(icao)) {
 						var newac = new Aircraft.Aircraft();
+						newac.canvas = myCanvas;
 						newac.icao = icao;
 						newac.setOriginPointWithCoordinate(current_lat, current_lng,current_alt);
 						newac.bodyObject = this.makeGameObject();
@@ -68,6 +70,7 @@ public class NetworkClient : MonoBehaviour {
 						var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
 						ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
 						Debug.Log($"POSITION SET:{ac.icao}");
+						ac.setTextInfo();
 					}
 					catch (System.InvalidCastException e) {
 						ac.latitude = 0;
