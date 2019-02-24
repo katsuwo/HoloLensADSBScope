@@ -5,11 +5,11 @@
 # Write a line equal to 'overwrite-all' (without quotes) to overwrite everything (preserved accross builds)
 # Write a line equal to 'keep-all' (without quotes) to keep files regardless their modification (preserved accross builds)
 # Default behavior is to never overwrite files
-HoloADSBScope.sln: 8EB48B3222C368330EB470A34780078E
+HoloADSBScope.sln: modified
 GeneratedProjects\UWP\Assembly-CSharp\project.json: 1D02BC64BAC0D041019673A1C4C51737
 HoloADSBScope\App.cs: F64B23BC83571D781EE6CFB9A7D66634
-HoloADSBScope\HoloADSBScope.csproj: D914E1B5DB2972A56B8EBFE917C85BA6
-HoloADSBScope\HoloADSBScope.csproj.user: BEFB8AC4886C4CFDD3C68445D6F19B04
+HoloADSBScope\HoloADSBScope.csproj: 603631DA35862FD1A10EBF8332AD743C
+HoloADSBScope\HoloADSBScope.csproj.user: modified
 HoloADSBScope\Package.appxmanifest: 64F0CF7008F928631B68E76F58CE75D3
 HoloADSBScope\project.json: 1D02BC64BAC0D041019673A1C4C51737
 HoloADSBScope\Assets\SplashScreen.scale-200.png: A85C1D7624B6902CF8CEBD6F0200A826
@@ -18,4 +18,12 @@ HoloADSBScope\Assets\Square44x44Logo.scale-200.png: 6C6EF27184ABE9D870A9D5649537
 HoloADSBScope\Assets\Square44x44Logo.targetsize-24_altform-unplated.png: 156637F7B5363E983E7A46D8E533A23D
 HoloADSBScope\Assets\StoreLogo.png: 90BD194CA4A7CFFF3E8B8222229857FB
 HoloADSBScope\Assets\Wide310x150Logo.scale-200.png: C96846A80DF667F87355569CD816192D
+HoloADSBScope\bin\x86\Release\AppX\Assets\SplashScreen.scale-200.png: A85C1D7624B6902CF8CEBD6F0200A826
+HoloADSBScope\bin\x86\Release\AppX\Assets\Square150x150Logo.scale-200.png: E02834B4A5DFB97FF8E212C1CACBB084
+HoloADSBScope\bin\x86\Release\AppX\Assets\Square44x44Logo.scale-200.png: 6C6EF27184ABE9D870A9D564953775DE
+HoloADSBScope\bin\x86\Release\AppX\Assets\Square44x44Logo.targetsize-24_altform-unplated.png: 156637F7B5363E983E7A46D8E533A23D
+HoloADSBScope\bin\x86\Release\AppX\Assets\StoreLogo.png: 90BD194CA4A7CFFF3E8B8222229857FB
+HoloADSBScope\bin\x86\Release\AppX\Assets\Wide310x150Logo.scale-200.png: C96846A80DF667F87355569CD816192D
+HoloADSBScope\bin\x86\Release\AppX\Properties\Default.rd.xml: 72EB282657164E79A1C42F6240984826
+HoloADSBScope\obj\x86\Release\HoloADSBScope.csproj.CopyComplete: D41D8CD98F00B204E9800998ECF8427E
 HoloADSBScope\Properties\Default.rd.xml: 72EB282657164E79A1C42F6240984826

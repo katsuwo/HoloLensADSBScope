@@ -47,6 +47,9 @@ namespace Aircraft {
 		[SerializeField]
 		public float world_alt = 0.0f;
 
+		public double direction = 0.0f;
+		public double distance = 0.0f;
+
 
 		[SerializeField]
 		public GameObject bodyObject { get; set; } = null;
@@ -77,22 +80,45 @@ namespace Aircraft {
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.altitude = altitude;
+
+
+	//		this.latitude = 35.7970407;
+	//		this.longitude = 139.2967381;
+	//		this.altitude = (172 + 333)/ 0.33;
+
+
 			this.bodyObject.SetActive(true);
 		}
 
 		// set Unity's world position from latitude and longitude
 		public void setWorldPosition() {
-			var dir = this.getDirection(this.latitude, this.longitude);
-			var distance = this.getDistance(this.latitude, this.longitude) /1000.0;
+			this.direction = this.getDirection(this.latitude, this.longitude);
+			this.distance = this.getDistance(this.latitude, this.longitude);
 
-			this.world_x = (float)(distance * rad2deg(System.Math.Sin(deg2rad(dir))));
-			this.world_y = (float)(distance * rad2deg(System.Math.Cos(deg2rad(dir))));
+//			this.world_x = (float)(this.distance * rad2deg(System.Math.Sin(deg2rad(this.direction))));
+//			this.world_y = (float)(this.distance * rad2deg(System.Math.Cos(deg2rad(this.direction))));
+
+
+			this.world_x = (float)(this.distance * System.Math.Sin(deg2rad(this.direction)));
+			this.world_y = (float)(this.distance * System.Math.Cos(deg2rad(this.direction)));
 			this.world_alt = (float)((this.altitude * 0.33) - this.originAltitude);
 			this.bodyObject.transform.position = new Vector3(this.world_x, this.world_alt, this.world_y);
 			this.setLabelPosition();
 		}
 
 		public void setLabelPosition() {
+			Vector3 camtr = Camera.main.transform.rotation.eulerAngles;
+			Debug.Log(camtr);
+			Debug.Log(this.direction);
+
+			//機体への角度と、カメラの方向が±120を超える場合は描画しない
+			//（Canvasの裏側からTextとLabelが描画される不具合の対策）
+			var diff = camtr.y - this.direction;
+			if (diff > 120 || diff < -120) {
+				Debug.Log("SKIP");
+				return;
+			}
+
 			RectTransform canvasRt = canvas.GetComponent<RectTransform>();
 
 			Text text = this.labelObject.GetComponent<Text>();

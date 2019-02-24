@@ -19,17 +19,15 @@ public class NetworkClient : MonoBehaviour {
 	// Use this for initialization
 	void Start() {
 		myCanvas = GameObject.Find("Canvas");
-		StartCoroutine(getText());
 	}
 
 	// Update is called once per frame
 	void Update() {
-		foreach(KeyValuePair<string,Aircraft.Aircraft> kvp in aircrafts) {
+		StartCoroutine(getText());
+		foreach (KeyValuePair<string,Aircraft.Aircraft> kvp in aircrafts) {
 			Aircraft.Aircraft ac = aircrafts[kvp.Key];
 			ac.setWorldPosition();
 		}
-
-
 	}
 
 
@@ -50,15 +48,15 @@ public class NetworkClient : MonoBehaviour {
 				foreach (KeyValuePair<string, object> kvp in items as Dictionary<string, object>) {
 					var tmpDic = (IDictionary)Json.Deserialize(kvp.Value as string);
 					string icao = (string)tmpDic["icao"];
-	//				if (icao != "8626CC") continue;
+	//				if (icao != "781063") continue;
 					if (!this.aircrafts.ContainsKey(icao)) {
 						var newac = new Aircraft.Aircraft();
 						newac.canvas = myCanvas;
 						newac.icao = icao;
 						newac.setOriginPointWithCoordinate(current_lat, current_lng,current_alt);
-						newac.bodyObject = this.makeGameObject();
-						newac.labelObject = this.makeLabelObject();
-						newac.targetBox = this.makeTargetBox();
+						newac.bodyObject = this.makeGameObject(icao);
+						newac.labelObject = this.makeLabelObject(icao);
+						newac.targetBox = this.makeTargetBox(icao);
 						aircrafts.Add(icao, newac);
 					}
 
@@ -69,44 +67,47 @@ public class NetworkClient : MonoBehaviour {
 						var tmpLongitude = (double)tmpDic["longitude"];
 						var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
 						ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
-						Debug.Log($"POSITION SET:{ac.icao}");
+//						Debug.Log($"POSITION SET:{ac.icao}");
 						ac.setTextInfo();
 					}
 					catch (System.InvalidCastException e) {
 						ac.latitude = 0;
 						ac.longitude = 0;
 						ac.altitude = 0;
-						Debug.Log($"ERR:{ac.icao}");
 					}
 				}
 			}
 		}
 	}
 
-	public GameObject makeGameObject() {
+	public GameObject makeGameObject(string icao) {
 		GameObject obj = GameObject.Find("Cube_Original");
 		GameObject newobj = Instantiate(obj, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+		newobj.name = icao;
 		return newobj;
 	}
 
-	public GameObject makeLabelObject() {
+	public GameObject makeLabelObject(string icao) {
 		var canvas = GameObject.Find("Canvas");
 		GameObject newobj = new GameObject("Text");
 		newobj.transform.parent = canvas.transform;
 		newobj.AddComponent<Text>();
+		newobj.name = "TEXT_" + icao;
 		Text text = newobj.GetComponent<Text>();
 		text.fontSize = 10;
 		text.alignment = TextAnchor.UpperCenter;
 		text.text = "TEST1 \nTEST2 \nTEST3";
 		text.font = Resources.FindObjectsOfTypeAll<Font>()[0];
+		text.color = new Color(1, 0, 0);
 		return newobj;
 	}
 
-	public GameObject makeTargetBox() {
+	public GameObject makeTargetBox(string icao) {
 		var canvas = GameObject.Find("Canvas");
 		GameObject newobj = new GameObject("Image");
 		newobj.transform.parent = canvas.transform;
 		newobj.AddComponent<Image>();
+		newobj.name = "IMAGE_" + icao;
 		Image img = newobj.GetComponent<Image>();
 		Sprite sp = Resources.Load<Sprite>("GreenSquare");
 		RectTransform rt = newobj.GetComponent<RectTransform>();
