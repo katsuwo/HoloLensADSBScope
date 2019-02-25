@@ -47,6 +47,10 @@ namespace Aircraft {
 		[SerializeField]
 		public float world_alt = 0.0f;
 
+		[SerializeField]
+		public int updateTimestamp = 0;
+
+
 		public double direction = 0.0f;
 		public double calibrationAngle = 0.0f;
 		public double distance = 0.0f;
@@ -157,7 +161,6 @@ namespace Aircraft {
 			}
 		}
 
-
 		//calculate direction from user's position to aircraft 
 		public double getDirection(double latitude, double longitude) {
 			var y1 = deg2rad(this.originLatitude);
@@ -170,6 +173,7 @@ namespace Aircraft {
 			if (ret < 0) { ret += 360.0; }
 			return ret;
 		}
+
 		public double deg2rad(double degree) {
 			return degree * System.Math.PI / 180.0;
 		}
