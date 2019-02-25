@@ -15,6 +15,9 @@ public class NetworkClient : MonoBehaviour {
 	double current_lat = 35.7979133;
 	double current_alt = 172;
 	private GameObject myCanvas;
+	private string readTime = "";
+	private float timeElapsed = 0.0f;
+	private float calibrationAngle = 180.0f;
 
 	// Use this for initialization
 	void Start() {
@@ -23,15 +26,31 @@ public class NetworkClient : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		StartCoroutine(getText());
+
+		timeElapsed += Time.deltaTime;
+		if (timeElapsed >= 0.5f) {
+			StartCoroutine(getText());
+			timeElapsed = 0.0f;
+		}
+
 		foreach (KeyValuePair<string,Aircraft.Aircraft> kvp in aircrafts) {
 			Aircraft.Aircraft ac = aircrafts[kvp.Key];
 			ac.setWorldPosition();
 		}
+		updateCamDirectionLabel();
 	}
 
 	IEnumerator getText() {
-		WWW request = new WWW("http://192.168.10.88:5000/all");
+		WWW request;
+		string url = "";
+
+		if (this.readTime == null || this.readTime == "") {
+			url = "http://192.168.10.88:5000/all";
+		}
+		else {
+			url = "http://192.168.10.88:5000/lastupdate/" + readTime;
+		}
+		request = new WWW(url);
 		yield return request;
 
 		if (!string.IsNullOrEmpty(request.error)) {
@@ -43,7 +62,7 @@ public class NetworkClient : MonoBehaviour {
 				string text = request.text;
 				IDictionary js = (IDictionary)Json.Deserialize(text);
 				var items = (IDictionary)js["Items"];
-				var readTime = (string)js["ReadTime:"];
+				this.readTime = (string)js["ReadTime"];
 
 				var keys = items.Keys;
 				foreach (KeyValuePair<string, object> kvp in items as Dictionary<string, object>) {
@@ -53,6 +72,7 @@ public class NetworkClient : MonoBehaviour {
 					if (!this.aircrafts.ContainsKey(icao)) {
 						var newac = new Aircraft.Aircraft();
 						newac.canvas = myCanvas;
+						newac.calibrationAngle = this.calibrationAngle;
 						newac.icao = icao;
 						newac.setOriginPointWithCoordinate(current_lat, current_lng,current_alt);
 						newac.bodyObject = this.makeGameObject(icao);
@@ -115,5 +135,21 @@ public class NetworkClient : MonoBehaviour {
 		rt.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 		img.sprite = sp;
 		return newobj;
+	}
+	public void updateCamDirectionLabel() {
+		GameObject obj = GameObject.Find("camDirectionLabel");
+		var txtCp = obj.GetComponent<Text>();
+		Vector3 camtr = Camera.main.transform.rotation.eulerAngles;
+		var angle = (camtr.y + this.calibrationAngle) % 360.0;
+		if (angle < 0) angle += 360.0;
+		String txt = String.Format("{0:##} : {1:##}", angle, camtr.x);
+		txtCp.text = txt;
+
+	}
+
+	public void calibrateDirection() {
+		GameObject obj = GameObject.Find("MixedRealityCameraParent");
+		Vector3 calibAngle = new Vector3(0, this.calibrationAngle, 0);
+		obj.transform.localEulerAngles = calibAngle;
 	}
 }

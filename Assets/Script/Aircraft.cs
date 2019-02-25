@@ -48,6 +48,7 @@ namespace Aircraft {
 		public float world_alt = 0.0f;
 
 		public double direction = 0.0f;
+		public double calibrationAngle = 0.0f;
 		public double distance = 0.0f;
 
 
@@ -80,27 +81,17 @@ namespace Aircraft {
 
 		//set position of Aircraft with latitude and longitude
 		public void setPositionWithCoordinate(double latitude, double longitude, double altitude) {
+
+			if (this.latitude == latitude && this.longitude == longitude && this.altitude == altitude) return;
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.altitude = altitude;
-
-
-	//		this.latitude = 35.7970407;
-	//		this.longitude = 139.2967381;
-	//		this.altitude = (172 + 333)/ 0.33;
-
-
-			this.bodyObject.SetActive(true);
 		}
 
 		// set Unity's world position from latitude and longitude
 		public void setWorldPosition() {
 			this.direction = this.getDirection(this.latitude, this.longitude);
 			this.distance = this.getDistance(this.latitude, this.longitude);
-
-//			this.world_x = (float)(this.distance * rad2deg(System.Math.Sin(deg2rad(this.direction))));
-//			this.world_y = (float)(this.distance * rad2deg(System.Math.Cos(deg2rad(this.direction))));
-
 
 			this.world_x = (float)(this.distance * System.Math.Sin(deg2rad(this.direction)));
 			this.world_y = (float)(this.distance * System.Math.Cos(deg2rad(this.direction)));
@@ -118,9 +109,12 @@ namespace Aircraft {
 			//（Canvasの裏側からTextとLabelが描画される不具合の対策）
 			var diff = camtr.y - this.direction;
 			if (diff > 120 || diff < -120) {
-				Debug.Log("SKIP");
+				this.labelObject.SetActive(false);
+				this.targetBox.SetActive(false);
 				return;
 			}
+			this.labelObject.SetActive(true);
+			this.targetBox.SetActive(true);
 
 			RectTransform canvasRt = canvas.GetComponent<RectTransform>();
 
@@ -152,7 +146,11 @@ namespace Aircraft {
 
 		public void setTextInfo() {
 			var uiText = this.labelObject.GetComponent<Text>();
-			this.text = $"{this.callsign}\n{this.altitude}\n{this.icao}";
+			var distanceText = string.Format("{0:####.##}km", this.distance/1000.0);
+			var altText = string.Format("{0:#####.#}ft", this.altitude);
+			var csText = this.callsign.Replace("_", "");
+			this.text = $"{csText}\n{altText}:{distanceText}\n{this.icao}";
+
 			if ( this.text != this.oldText) {
 				uiText.text = this.text;
 				this.oldText = this.text;
@@ -168,7 +166,7 @@ namespace Aircraft {
 			var x2 = deg2rad(longitude);
 			var Y = System.Math.Cos(y2) * System.Math.Sin(x2 - x1);
 			var X = System.Math.Cos(y1) * System.Math.Sin(y2) - System.Math.Sin(y1) * System.Math.Cos(y2) * System.Math.Cos(x2 - x1);
-			var ret = rad2deg(System.Math.Atan2(Y, X)) % 360.0;
+			var ret = (rad2deg(System.Math.Atan2(Y, X)) + calibrationAngle) % 360.0;
 			if (ret < 0) { ret += 360.0; }
 			return ret;
 		}
