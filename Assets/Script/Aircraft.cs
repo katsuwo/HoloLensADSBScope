@@ -63,6 +63,9 @@ namespace Aircraft {
 
 		public GameObject canvas { get; set; } = null;
 
+		private string text = "";
+		private string oldText = "";
+
 		private void Awake() {
 		}
 
@@ -149,7 +152,11 @@ namespace Aircraft {
 
 		public void setTextInfo() {
 			var uiText = this.labelObject.GetComponent<Text>();
-			uiText.text = $"{this.callsign}\n{this.altitude}\n{this.icao}";
+			this.text = $"{this.callsign}\n{this.altitude}\n{this.icao}";
+			if ( this.text != this.oldText) {
+				uiText.text = this.text;
+				this.oldText = this.text;
+			}
 		}
 
 

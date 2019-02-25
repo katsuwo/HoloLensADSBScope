@@ -30,7 +30,6 @@ public class NetworkClient : MonoBehaviour {
 		}
 	}
 
-
 	IEnumerator getText() {
 		WWW request = new WWW("http://192.168.10.88:5000/all");
 		yield return request;
@@ -44,11 +43,13 @@ public class NetworkClient : MonoBehaviour {
 				string text = request.text;
 				IDictionary js = (IDictionary)Json.Deserialize(text);
 				var items = (IDictionary)js["Items"];
+				var readTime = (string)js["ReadTime:"];
+
 				var keys = items.Keys;
 				foreach (KeyValuePair<string, object> kvp in items as Dictionary<string, object>) {
 					var tmpDic = (IDictionary)Json.Deserialize(kvp.Value as string);
 					string icao = (string)tmpDic["icao"];
-	//				if (icao != "781063") continue;
+//					if (icao != "8511CA") continue;
 					if (!this.aircrafts.ContainsKey(icao)) {
 						var newac = new Aircraft.Aircraft();
 						newac.canvas = myCanvas;
@@ -61,13 +62,13 @@ public class NetworkClient : MonoBehaviour {
 					}
 
 					Aircraft.Aircraft ac = this.aircrafts[icao];
-					ac.callsign = (string)tmpDic["callsign"];
 					try {
 						var tmpLatitude = (double)tmpDic["latitude"];
 						var tmpLongitude = (double)tmpDic["longitude"];
 						var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
+						var tmpCallsign = (string)tmpDic["callsign"];
+						ac.callsign = tmpCallsign;
 						ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
-//						Debug.Log($"POSITION SET:{ac.icao}");
 						ac.setTextInfo();
 					}
 					catch (System.InvalidCastException e) {
@@ -96,7 +97,7 @@ public class NetworkClient : MonoBehaviour {
 		Text text = newobj.GetComponent<Text>();
 		text.fontSize = 10;
 		text.alignment = TextAnchor.UpperCenter;
-		text.text = "TEST1 \nTEST2 \nTEST3";
+		text.text = "";
 		text.font = Resources.FindObjectsOfTypeAll<Font>()[0];
 		text.color = new Color(1, 0, 0);
 		return newobj;
