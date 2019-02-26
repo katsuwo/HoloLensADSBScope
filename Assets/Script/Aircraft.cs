@@ -60,7 +60,7 @@ namespace Aircraft {
 		public GameObject bodyObject { get; set; } = null;
 
 		[SerializeField]
-		public GameObject labelObject{ get; set; } = null;
+		public GameObject labelObject { get; set; } = null;
 
 		[SerializeField]
 		public GameObject targetBox { get; set; } = null;
@@ -112,6 +112,7 @@ namespace Aircraft {
 			//機体への角度と、カメラの方向が±120を超える場合は描画しない
 			//（Canvasの裏側からTextとLabelが描画される不具合の対策）
 			var diff = camtr.y - this.direction;
+//			var diff = ((camtr.y + calibrationAngle) - this.direction) % 360.0;
 			if (diff > 120 || diff < -120) {
 				this.labelObject.SetActive(false);
 				this.targetBox.SetActive(false);
@@ -125,12 +126,14 @@ namespace Aircraft {
 			Text text = this.labelObject.GetComponent<Text>();
 			Image targetBox = this.targetBox.GetComponent<Image>();
 			RectTransform textRt = text.GetComponent<RectTransform>();
-			RectTransform targetBoxRt =  targetBox.GetComponent<RectTransform>();
+			RectTransform targetBoxRt = targetBox.GetComponent<RectTransform>();
+			textRt.transform.eulerAngles = new Vector3(0.0f, camtr.y, 0.0f);
+			targetBoxRt.transform.eulerAngles = new Vector3(0.0f, camtr.y, 0.0f);
 
 			Vector2 screenPoint;
 			Vector2 localPoint;
 
-			screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main , this.bodyObject.transform.position);
+			screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, this.bodyObject.transform.position);
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRt, screenPoint, Camera.main, out localPoint);
 			textRt.localPosition = localPoint;
 			targetBoxRt.localPosition = localPoint;
@@ -150,12 +153,12 @@ namespace Aircraft {
 
 		public void setTextInfo() {
 			var uiText = this.labelObject.GetComponent<Text>();
-			var distanceText = string.Format("{0:####.##}km", this.distance/1000.0);
+			var distanceText = string.Format("{0:####.##}km", this.distance / 1000.0);
 			var altText = string.Format("{0:#####.#}ft", this.altitude);
 			var csText = this.callsign.Replace("_", "");
 			this.text = $"{csText}\n{altText}:{distanceText}\n{this.icao}";
 
-			if ( this.text != this.oldText) {
+			if (this.text != this.oldText) {
 				uiText.text = this.text;
 				this.oldText = this.text;
 			}

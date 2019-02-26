@@ -50,7 +50,7 @@ public class NetworkClient : MonoBehaviour {
 
 
 		List<string> deleteList = new List<string>();
-		foreach (KeyValuePair<string,Aircraft.Aircraft> kvp in aircrafts) {
+		foreach (KeyValuePair<string, Aircraft.Aircraft> kvp in aircrafts) {
 			Aircraft.Aircraft ac = aircrafts[kvp.Key];
 			if (this.readTime - ac.updateTimestamp > deleteInterval) {
 				Destroy(ac.labelObject);
@@ -64,7 +64,7 @@ public class NetworkClient : MonoBehaviour {
 			}
 		}
 
-		foreach(string ac in deleteList) {
+		foreach (string ac in deleteList) {
 			aircrafts.Remove(ac);
 		}
 
@@ -113,14 +113,14 @@ public class NetworkClient : MonoBehaviour {
 				foreach (KeyValuePair<string, object> kvp in items as Dictionary<string, object>) {
 					var tmpDic = (IDictionary)Json.Deserialize(kvp.Value as string);
 					string icao = (string)tmpDic["icao"];
-//					if (icao != "8511CA") continue;
+					//					if (icao != "8511CA") continue;
 					if (!this.aircrafts.ContainsKey(icao)) {
 						var newac = new Aircraft.Aircraft();
 						newac.canvas = myCanvas;
 						newac.calibrationAngle = this.calibrationAngle;
 						newac.updateTimestamp = (int)(double)tmpDic["update_time_stamp"];
 						newac.icao = icao;
-						newac.setOriginPointWithCoordinate(current_lat, current_lng,current_alt);
+						newac.setOriginPointWithCoordinate(current_lat, current_lng, current_alt);
 						newac.bodyObject = this.makeGameObject(icao);
 						newac.labelObject = this.makeLabelObject(icao);
 						newac.targetBox = this.makeTargetBox(icao);
@@ -160,6 +160,9 @@ public class NetworkClient : MonoBehaviour {
 		newobj.transform.parent = canvas.transform;
 		newobj.AddComponent<Text>();
 		newobj.name = "TEXT_" + icao;
+		RectTransform rt = newobj.GetComponent<RectTransform>();
+		var tmpVect = rt.transform.eulerAngles;
+		rt.transform.Rotate(new Vector3(0.0f, 0.0f, 0.0f));
 		Text text = newobj.GetComponent<Text>();
 		text.fontSize = 10;
 		text.alignment = TextAnchor.UpperCenter;
@@ -179,6 +182,8 @@ public class NetworkClient : MonoBehaviour {
 		Sprite sp = Resources.Load<Sprite>("GreenSquare");
 		RectTransform rt = newobj.GetComponent<RectTransform>();
 		rt.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+		var tmpVect = rt.transform.eulerAngles;
+		rt.transform.Rotate(new Vector3(0.0f, 0.0f, 0.0f));
 		img.sprite = sp;
 		return newobj;
 	}
