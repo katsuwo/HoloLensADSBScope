@@ -30,7 +30,8 @@ public class NetworkClient : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
-		myCanvas = GameObject.Find("Canvas");
+		myCanvas = GameObject.Find("InfoCanvas");
+		myCanvas.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
 		StartCoroutine(getText(true));
 	}
 
@@ -47,7 +48,6 @@ public class NetworkClient : MonoBehaviour {
 			StartCoroutine(getText(false));
 			timeElapsed = 0.0f;
 		}
-
 
 		List<string> deleteList = new List<string>();
 		foreach (KeyValuePair<string, Aircraft.Aircraft> kvp in aircrafts) {
@@ -76,14 +76,14 @@ public class NetworkClient : MonoBehaviour {
 		string url = "";
 
 		if (dbClear == true) {
-			url = "http://192.168.10.88:5000/clear";
+			url = "http://raspberrypi.local:5000/clear";
 		}
 		else {
 			if (this.readTime == 0) {
-				url = "http://192.168.10.88:5000/all";
+				url = "http://raspberrypi.local::5000/all";
 			}
 			else {
-				url = "http://192.168.10.88:5000/lastupdate/" + readTime;
+				url = "http://raspberrypi.local:5000/lastupdate/" + readTime;
 			}
 		}
 		request = new WWW(url);
@@ -98,6 +98,7 @@ public class NetworkClient : MonoBehaviour {
 				string text = request.text;
 				IDictionary js = (IDictionary)Json.Deserialize(text);
 
+				//Calibrate my position and direction
 				var calibrations = (IDictionary)js["Calibration"];
 				var currentPos = (IDictionary)calibrations["currentPosition"];
 				var calibPos = (IDictionary)calibrations["calibratePosition"];
@@ -107,6 +108,7 @@ public class NetworkClient : MonoBehaviour {
 				calibration_lat = (double)calibPos["latitude"];
 				calibration_lng = (double)calibPos["longitude"];
 				this.calibrationAngle = (float)this.calibrateDirection();
+				this.setCalibration();
 
 				var items = (IDictionary)js["Items"];
 				var keys = items.Keys;
@@ -147,6 +149,12 @@ public class NetworkClient : MonoBehaviour {
 		}
 	}
 
+	public void setCalibration() {
+		GameObject obj = GameObject.Find("MixedRealityCameraParent");
+		Vector3 newAngle = new Vector3(0.0f, this.calibrationAngle, 0.0f);
+		obj.transform.eulerAngles = newAngle;
+	}
+
 	public GameObject makeGameObject(string icao) {
 		GameObject obj = GameObject.Find("Cube_Original");
 		GameObject newobj = Instantiate(obj, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
@@ -155,7 +163,7 @@ public class NetworkClient : MonoBehaviour {
 	}
 
 	public GameObject makeLabelObject(string icao) {
-		var canvas = GameObject.Find("Canvas");
+		var canvas = GameObject.Find("InfoCanvas");
 		GameObject newobj = new GameObject("Text");
 		newobj.transform.parent = canvas.transform;
 		newobj.AddComponent<Text>();
@@ -173,7 +181,7 @@ public class NetworkClient : MonoBehaviour {
 	}
 
 	public GameObject makeTargetBox(string icao) {
-		var canvas = GameObject.Find("Canvas");
+		var canvas = GameObject.Find("InfoCanvas");
 		GameObject newobj = new GameObject("Image");
 		newobj.transform.parent = canvas.transform;
 		newobj.AddComponent<Image>();
@@ -191,7 +199,7 @@ public class NetworkClient : MonoBehaviour {
 	public void updateInformationLabel() {
 		GameObject obj = GameObject.Find("camDirectionLabel");
 		var txtCp = obj.GetComponent<Text>();
-		Vector3 camtr = Camera.main.transform.rotation.eulerAngles;
+		Vector3 camtr = Camera.main.transform.localEulerAngles;
 		var angle_h = (camtr.y + this.calibrationAngle) % 360.0;
 		if (angle_h < 0) angle_h += 360.0;
 		var angle_v = camtr.x - 360.0f;

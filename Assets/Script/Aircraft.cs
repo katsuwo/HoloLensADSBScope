@@ -82,10 +82,8 @@ namespace Aircraft {
 			this.originAltitude = altitude;
 		}
 
-
 		//set position of Aircraft with latitude and longitude
 		public void setPositionWithCoordinate(double latitude, double longitude, double altitude) {
-
 			if (this.latitude == latitude && this.longitude == longitude && this.altitude == altitude) return;
 			this.latitude = latitude;
 			this.longitude = longitude;
@@ -94,7 +92,9 @@ namespace Aircraft {
 
 		// set Unity's world position from latitude and longitude
 		public void setWorldPosition() {
-			this.direction = this.getDirection(this.latitude, this.longitude);
+			var tmpDir = (this.getDirection(this.latitude, this.longitude) /*- calibrationAngle*/);
+			if (tmpDir < 0) tmpDir += 360.0;
+			this.direction = tmpDir;
 			this.distance = this.getDistance(this.latitude, this.longitude);
 
 			this.world_x = (float)(this.distance * System.Math.Sin(deg2rad(this.direction)));
@@ -172,7 +172,8 @@ namespace Aircraft {
 			var x2 = deg2rad(longitude);
 			var Y = System.Math.Cos(y2) * System.Math.Sin(x2 - x1);
 			var X = System.Math.Cos(y1) * System.Math.Sin(y2) - System.Math.Sin(y1) * System.Math.Cos(y2) * System.Math.Cos(x2 - x1);
-			var ret = (rad2deg(System.Math.Atan2(Y, X)) + calibrationAngle) % 360.0;
+//			var ret = (rad2deg(System.Math.Atan2(Y, X)) + calibrationAngle) % 360.0;
+			var ret = rad2deg(System.Math.Atan2(Y, X))  % 360.0;
 			if (ret < 0) { ret += 360.0; }
 			return ret;
 		}
