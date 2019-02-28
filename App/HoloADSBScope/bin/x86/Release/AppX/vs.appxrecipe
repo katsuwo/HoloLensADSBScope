@@ -30,13 +30,13 @@
     <AppXManifest Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\bin\x86\Release\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2019-02-27T08:15:24.131</Modified>
+      <Modified>2019-02-28T12:46:03.186</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\bin\x86\Release\HoloADSBScope.exe">
       <PackagePath>entrypoint\HoloADSBScope.exe</PackagePath>
-      <Modified>2019-02-27T08:15:12.619</Modified>
+      <Modified>2019-02-28T12:45:52.674</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\.nuget\packages\microsoft.applicationinsights\1.0.0\lib\portable-win81+wpa81\Microsoft.ApplicationInsights.dll">
       <PackagePath>Microsoft.ApplicationInsights.dll</PackagePath>
@@ -500,7 +500,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Resource.res">
       <PackagePath>Resource.res</PackagePath>
-      <Modified>2019-02-27T08:13:29.611</Modified>
+      <Modified>2019-02-28T12:03:48.910</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
@@ -558,15 +558,19 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\boot.config">
       <PackagePath>Data\boot.config</PackagePath>
-      <Modified>2019-02-27T08:12:49.582</Modified>
+      <Modified>2019-02-28T12:03:12.564</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\globalgamemanagers">
       <PackagePath>Data\globalgamemanagers</PackagePath>
-      <Modified>2019-02-27T08:12:48.736</Modified>
+      <Modified>2019-02-28T12:03:11.335</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\level0">
       <PackagePath>Data\level0</PackagePath>
-      <Modified>2019-02-27T08:12:47.479</Modified>
+      <Modified>2019-02-28T12:03:09.436</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\level1">
+      <PackagePath>Data\level1</PackagePath>
+      <Modified>2019-02-28T12:03:09.968</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\Resources\unity default resources">
       <PackagePath>Data\Resources\unity default resources</PackagePath>
@@ -574,39 +578,47 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\Resources\unity_builtin_extra">
       <PackagePath>Data\Resources\unity_builtin_extra</PackagePath>
-      <Modified>2019-02-27T08:12:49.577</Modified>
+      <Modified>2019-02-28T12:03:12.558</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\globalgamemanagers.assets">
       <PackagePath>Data\globalgamemanagers.assets</PackagePath>
-      <Modified>2019-02-27T08:12:48.844</Modified>
+      <Modified>2019-02-28T12:03:11.464</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\resources.assets">
       <PackagePath>Data\resources.assets</PackagePath>
-      <Modified>2019-02-27T08:12:48.866</Modified>
+      <Modified>2019-02-28T12:03:11.766</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\sharedassets0.assets">
       <PackagePath>Data\sharedassets0.assets</PackagePath>
-      <Modified>2019-02-27T08:12:49.332</Modified>
+      <Modified>2019-02-28T12:03:12.225</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\sharedassets1.assets">
+      <PackagePath>Data\sharedassets1.assets</PackagePath>
+      <Modified>2019-02-28T12:03:12.281</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\level0.resS">
       <PackagePath>Data\level0.resS</PackagePath>
-      <Modified>2019-02-27T08:12:47.473</Modified>
+      <Modified>2019-02-28T12:03:09.426</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\level1.resS">
+      <PackagePath>Data\level1.resS</PackagePath>
+      <Modified>2019-02-28T12:03:09.957</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\resources.assets.resS">
       <PackagePath>Data\resources.assets.resS</PackagePath>
-      <Modified>2019-02-27T08:12:48.863</Modified>
+      <Modified>2019-02-28T12:03:11.758</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\sharedassets0.assets.resS">
       <PackagePath>Data\sharedassets0.assets.resS</PackagePath>
-      <Modified>2019-02-27T08:12:49.329</Modified>
+      <Modified>2019-02-28T12:03:12.222</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\managedAssemblies.txt">
       <PackagePath>Data\managedAssemblies.txt</PackagePath>
-      <Modified>2019-02-27T08:13:29.548</Modified>
+      <Modified>2019-02-28T12:03:48.866</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Data\nativePlugins.txt">
       <PackagePath>Data\nativePlugins.txt</PackagePath>
-      <Modified>2019-02-27T08:13:29.550</Modified>
+      <Modified>2019-02-28T12:03:48.868</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.17763.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -614,231 +626,231 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\bin\x86\Release\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2019-02-27T08:15:13.201</Modified>
+      <Modified>2019-02-28T12:04:38.432</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.TilemapModule.dll">
       <PackagePath>UnityEngine.TilemapModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.123</Modified>
+      <Modified>2019-02-28T12:46:01.654</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.TextRenderingModule.dll">
       <PackagePath>UnityEngine.TextRenderingModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.137</Modified>
+      <Modified>2019-02-28T12:46:01.667</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.TerrainPhysicsModule.dll">
       <PackagePath>UnityEngine.TerrainPhysicsModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.152</Modified>
+      <Modified>2019-02-28T12:46:01.680</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.TerrainModule.dll">
       <PackagePath>UnityEngine.TerrainModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.165</Modified>
+      <Modified>2019-02-28T12:46:01.692</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.SharedInternalsModule.dll">
       <PackagePath>UnityEngine.SharedInternalsModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.180</Modified>
+      <Modified>2019-02-28T12:46:01.706</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.SpriteMaskModule.dll">
       <PackagePath>UnityEngine.SpriteMaskModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.194</Modified>
+      <Modified>2019-02-28T12:46:01.719</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.SpriteShapeModule.dll">
       <PackagePath>UnityEngine.SpriteShapeModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.206</Modified>
+      <Modified>2019-02-28T12:46:01.730</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.StyleSheetsModule.dll">
       <PackagePath>UnityEngine.StyleSheetsModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.218</Modified>
+      <Modified>2019-02-28T12:46:01.743</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UIElementsModule.dll">
       <PackagePath>UnityEngine.UIElementsModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.246</Modified>
+      <Modified>2019-02-28T12:46:01.770</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UnityWebRequestWWWModule.dll">
       <PackagePath>UnityEngine.UnityWebRequestWWWModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.267</Modified>
+      <Modified>2019-02-28T12:46:01.793</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.VehiclesModule.dll">
       <PackagePath>UnityEngine.VehiclesModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.280</Modified>
+      <Modified>2019-02-28T12:46:01.805</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.VideoModule.dll">
       <PackagePath>UnityEngine.VideoModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.293</Modified>
+      <Modified>2019-02-28T12:46:01.816</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.VRModule.dll">
       <PackagePath>UnityEngine.VRModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.317</Modified>
+      <Modified>2019-02-28T12:46:01.834</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.WebModule.dll">
       <PackagePath>UnityEngine.WebModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.333</Modified>
+      <Modified>2019-02-28T12:46:01.849</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.WindModule.dll">
       <PackagePath>UnityEngine.WindModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.348</Modified>
+      <Modified>2019-02-28T12:46:01.862</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UnityWebRequestTextureModule.dll">
       <PackagePath>UnityEngine.UnityWebRequestTextureModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.359</Modified>
+      <Modified>2019-02-28T12:46:01.872</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UIModule.dll">
       <PackagePath>UnityEngine.UIModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.372</Modified>
+      <Modified>2019-02-28T12:46:01.883</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UNETModule.dll">
       <PackagePath>UnityEngine.UNETModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.389</Modified>
+      <Modified>2019-02-28T12:46:01.900</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UnityAnalyticsModule.dll">
       <PackagePath>UnityEngine.UnityAnalyticsModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.404</Modified>
+      <Modified>2019-02-28T12:46:01.914</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UnityConnectModule.dll">
       <PackagePath>UnityEngine.UnityConnectModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.418</Modified>
+      <Modified>2019-02-28T12:46:01.926</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UnityWebRequestAudioModule.dll">
       <PackagePath>UnityEngine.UnityWebRequestAudioModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.429</Modified>
+      <Modified>2019-02-28T12:46:01.938</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UnityWebRequestModule.dll">
       <PackagePath>UnityEngine.UnityWebRequestModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.443</Modified>
+      <Modified>2019-02-28T12:46:01.950</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.ScreenCaptureModule.dll">
       <PackagePath>UnityEngine.ScreenCaptureModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.460</Modified>
+      <Modified>2019-02-28T12:46:01.966</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.AssetBundleModule.dll">
       <PackagePath>UnityEngine.AssetBundleModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.471</Modified>
+      <Modified>2019-02-28T12:46:01.976</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.AudioModule.dll">
       <PackagePath>UnityEngine.AudioModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.484</Modified>
+      <Modified>2019-02-28T12:46:01.990</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.ClothModule.dll">
       <PackagePath>UnityEngine.ClothModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.500</Modified>
+      <Modified>2019-02-28T12:46:02.005</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.CoreModule.dll">
       <PackagePath>UnityEngine.CoreModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.677</Modified>
+      <Modified>2019-02-28T12:46:02.174</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.CrashReportingModule.dll">
       <PackagePath>UnityEngine.CrashReportingModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.732</Modified>
+      <Modified>2019-02-28T12:46:02.232</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.DirectorModule.dll">
       <PackagePath>UnityEngine.DirectorModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.745</Modified>
+      <Modified>2019-02-28T12:46:02.246</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.ARModule.dll">
       <PackagePath>UnityEngine.ARModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.758</Modified>
+      <Modified>2019-02-28T12:46:02.261</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.AccessibilityModule.dll">
       <PackagePath>UnityEngine.AccessibilityModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.772</Modified>
+      <Modified>2019-02-28T12:46:02.276</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.AIModule.dll">
       <PackagePath>UnityEngine.AIModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.785</Modified>
+      <Modified>2019-02-28T12:46:02.290</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.AnimationModule.dll">
       <PackagePath>UnityEngine.AnimationModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.803</Modified>
+      <Modified>2019-02-28T12:46:02.314</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.dll">
       <PackagePath>UnityEngine.dll</PackagePath>
-      <Modified>2019-02-27T08:13:07.243</Modified>
+      <Modified>2019-02-28T12:03:28.892</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.ParticlesLegacyModule.dll">
       <PackagePath>UnityEngine.ParticlesLegacyModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.818</Modified>
+      <Modified>2019-02-28T12:46:02.330</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.ParticleSystemModule.dll">
       <PackagePath>UnityEngine.ParticleSystemModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.838</Modified>
+      <Modified>2019-02-28T12:46:02.349</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.PerformanceReportingModule.dll">
       <PackagePath>UnityEngine.PerformanceReportingModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.854</Modified>
+      <Modified>2019-02-28T12:46:02.366</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.Physics2DModule.dll">
       <PackagePath>UnityEngine.Physics2DModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.875</Modified>
+      <Modified>2019-02-28T12:46:02.383</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.PhysicsModule.dll">
       <PackagePath>UnityEngine.PhysicsModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.895</Modified>
+      <Modified>2019-02-28T12:46:02.404</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.JSONSerializeModule.dll">
       <PackagePath>UnityEngine.JSONSerializeModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.909</Modified>
+      <Modified>2019-02-28T12:46:02.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.GameCenterModule.dll">
       <PackagePath>UnityEngine.GameCenterModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.922</Modified>
+      <Modified>2019-02-28T12:46:02.431</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.GridModule.dll">
       <PackagePath>UnityEngine.GridModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.937</Modified>
+      <Modified>2019-02-28T12:46:02.446</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.ImageConversionModule.dll">
       <PackagePath>UnityEngine.ImageConversionModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.949</Modified>
+      <Modified>2019-02-28T12:46:02.458</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.IMGUIModule.dll">
       <PackagePath>UnityEngine.IMGUIModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.968</Modified>
+      <Modified>2019-02-28T12:46:02.478</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.InputModule.dll">
       <PackagePath>UnityEngine.InputModule.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.985</Modified>
+      <Modified>2019-02-28T12:46:02.495</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Newtonsoft.Json.dll">
       <PackagePath>Newtonsoft.Json.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.029</Modified>
+      <Modified>2019-02-28T12:46:02.536</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.Timeline.dll">
       <PackagePath>UnityEngine.Timeline.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.074</Modified>
+      <Modified>2019-02-28T12:46:02.572</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\nunit.framework.dll">
       <PackagePath>nunit.framework.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.404</Modified>
+      <Modified>2019-02-28T12:46:02.616</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.UI.dll">
       <PackagePath>UnityEngine.UI.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.464</Modified>
+      <Modified>2019-02-28T12:46:02.676</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.SpatialTracking.dll">
       <PackagePath>UnityEngine.SpatialTracking.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.491</Modified>
+      <Modified>2019-02-28T12:46:02.704</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.HoloLens.dll">
       <PackagePath>UnityEngine.HoloLens.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.507</Modified>
+      <Modified>2019-02-28T12:46:02.722</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.StandardEvents.dll">
       <PackagePath>UnityEngine.StandardEvents.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.526</Modified>
+      <Modified>2019-02-28T12:46:02.740</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\UnityEngine.Networking.dll">
       <PackagePath>UnityEngine.Networking.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.572</Modified>
+      <Modified>2019-02-28T12:46:02.788</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\GLTFSerializationUWP.dll">
       <PackagePath>GLTFSerializationUWP.dll</PackagePath>
-      <Modified>2019-02-27T08:15:23.610</Modified>
+      <Modified>2019-02-28T12:46:02.830</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\Assembly-CSharp.dll">
       <PackagePath>Assembly-CSharp.dll</PackagePath>
-      <Modified>2019-02-27T08:15:22.058</Modified>
+      <Modified>2019-02-28T12:46:01.591</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\katsu\Work\HoloADSBScope\App\HoloADSBScope\bin\x86\Release\Core\HoloADSBScope.exe">
       <PackagePath>HoloADSBScope.exe</PackagePath>
-      <Modified>2019-02-27T08:15:24.128</Modified>
+      <Modified>2019-02-28T12:46:03.183</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

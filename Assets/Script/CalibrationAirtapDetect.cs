@@ -26,7 +26,6 @@ public class CalibrationAirtapDetect : MonoBehaviour, IInputClickHandler {
 
 	public void OnInputClicked(InputClickedEventData eventData) {
 		Invoke("movetoMainScene", 1.5f);
-		GameObject cam = GameObject.Find("MixedRealityCamera");
 		camAngleAtStart = MixedRealityCamera.transform.localEulerAngles.y;
 		text1.SetActive(false);
 		text2.SetActive(false);

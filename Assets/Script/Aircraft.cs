@@ -139,7 +139,7 @@ namespace Aircraft {
 			targetBoxRt.localPosition = localPoint;
 		}
 
-		//calculate distance from user's position to aircraft 
+		//calculate distance from camera position to aircraft 
 		public double getDistance(double latitude, double longitude) {
 			var lat1 = deg2rad(this.originLatitude);
 			var lng1 = deg2rad(this.originLongitude);

@@ -32,17 +32,21 @@ public class NetworkClient : MonoBehaviour {
 	void Start() {
 		myCanvas = GameObject.Find("InfoCanvas");
 		myCanvas.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+		myCanvas.transform.localEulerAngles = new Vector3(0, 0, 0);
 		StartCoroutine(getText(true));
+		//Destroy camera of Calibrate Scene
+		GameObject cam = GameObject.Find("MixedRealityCameraCalibrateScene");
+		Destroy(cam);
 	}
 
 	// Update is called once per frame
 	void Update() {
-
+/*
 		if (isOpening == true) {
 			openningEffect();
 			return;
 		}
-
+*/
 		timeElapsed += Time.deltaTime;
 		if (timeElapsed >= 0.5f) {
 			StartCoroutine(getText(false));
@@ -76,14 +80,14 @@ public class NetworkClient : MonoBehaviour {
 		string url = "";
 
 		if (dbClear == true) {
-			url = "http://raspberrypi.local:5000/clear";
+			url = "http://192.168.10.88:5000/clear";
 		}
 		else {
-			if (this.readTime == 0) {
-				url = "http://raspberrypi.local::5000/all";
+			if (this.aircrafts.Count == 0) {
+				url = "http://192.168.10.88:5000/all";
 			}
 			else {
-				url = "http://raspberrypi.local:5000/lastupdate/" + readTime;
+				url = "http://192.168.10.88:5000/lastupdate/" + readTime;
 			}
 		}
 		request = new WWW(url);
@@ -150,11 +154,18 @@ public class NetworkClient : MonoBehaviour {
 	}
 
 	public void setCalibration() {
-		GameObject obj = GameObject.Find("MixedRealityCameraParent");
+		//		GameObject obj = GameObject.Find("MixedRealityCameraParent");
+		//		Vector3 newAngle = new Vector3(0.0f,  - this.calibrationAngle, 0.0f);
+		//		obj.transform.eulerAngles = newAngle;
+		GameObject obj = GameObject.Find("MixedRealityCamera");
 		Vector3 newAngle = new Vector3(0.0f, this.calibrationAngle, 0.0f);
-		obj.transform.eulerAngles = newAngle;
-	}
+		Debug.Log(obj.transform.localEulerAngles);
+		Debug.Log(obj.transform.eulerAngles);
+		obj.transform.localEulerAngles = newAngle;
 
+
+	}
+	
 	public GameObject makeGameObject(string icao) {
 		GameObject obj = GameObject.Find("Cube_Original");
 		GameObject newobj = Instantiate(obj, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
