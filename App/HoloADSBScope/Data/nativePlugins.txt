@@ -3,3 +3,4 @@ MicStreamSelector.dll
 GpuTiming.dll
 SharingClient.dll
 SpatialUnderstanding.dll
+AudioPluginMsHRTF.dll

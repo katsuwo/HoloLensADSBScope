@@ -28,6 +28,9 @@ public class NetworkClient : MonoBehaviour {
 	private int openningCounter = 0;
 	bool isOpening = true;
 
+	private float dumangle = 0.0f;
+	public GameObject linedrawObj = null;
+	private LineDraw ld = null;
 	// Use this for initialization
 	void Start() {
 		myCanvas = GameObject.Find("InfoCanvas");
@@ -37,6 +40,8 @@ public class NetworkClient : MonoBehaviour {
 		//Destroy camera of Calibrate Scene
 		GameObject cam = GameObject.Find("MixedRealityCameraCalibrateScene");
 		Destroy(cam);
+		linedrawObj = GameObject.Find("LineDraw");
+		ld = (LineDraw)linedrawObj.GetComponent<LineDraw>();
 	}
 
 	// Update is called once per frame
@@ -112,7 +117,7 @@ public class NetworkClient : MonoBehaviour {
 				calibration_lat = (double)calibPos["latitude"];
 				calibration_lng = (double)calibPos["longitude"];
 				this.calibrationAngle = (float)this.calibrateDirection();
-				this.setCalibration();
+//				this.setCalibration();
 
 				var items = (IDictionary)js["Items"];
 				var keys = items.Keys;
@@ -131,6 +136,7 @@ public class NetworkClient : MonoBehaviour {
 						newac.labelObject = this.makeLabelObject(icao);
 						newac.targetBox = this.makeTargetBox(icao);
 						aircrafts.Add(icao, newac);
+						ld.addStrokeSet(icao);
 					}
 
 					Aircraft.Aircraft ac = this.aircrafts[icao];
@@ -142,6 +148,7 @@ public class NetworkClient : MonoBehaviour {
 						ac.callsign = tmpCallsign;
 						ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
 						ac.setTextInfo();
+						ld.addStroke(icao, ac.bodyObject.transform.position);
 					}
 					catch (System.InvalidCastException e) {
 						ac.latitude = 0;
@@ -151,17 +158,21 @@ public class NetworkClient : MonoBehaviour {
 				}
 			}
 		}
+	//	ld.OnRenderObject();
 	}
 
 	public void setCalibration() {
-		//		GameObject obj = GameObject.Find("MixedRealityCameraParent");
-		//		Vector3 newAngle = new Vector3(0.0f,  - this.calibrationAngle, 0.0f);
-		//		obj.transform.eulerAngles = newAngle;
-		GameObject obj = GameObject.Find("MixedRealityCamera");
-		Vector3 newAngle = new Vector3(0.0f, this.calibrationAngle, 0.0f);
-		Debug.Log(obj.transform.localEulerAngles);
-		Debug.Log(obj.transform.eulerAngles);
+		GameObject obj = GameObject.Find("MixedRealityCameraParent");
+		Vector3 newAngle = new Vector3(0.0f, this.dumangle, 0.0f);
 		obj.transform.localEulerAngles = newAngle;
+		Debug.Log(obj.transform.localEulerAngles);
+		dumangle += 1.0f;
+
+//		GameObject obj = GameObject.Find("MixedRealityCamera");
+//		Vector3 newAngle = new Vector3(0.0f, this.calibrationAngle, 0.0f);
+//		Debug.Log(obj.transform.localEulerAngles);
+//		Debug.Log(obj.transform.eulerAngles);
+//		obj.transform.localEulerAngles = newAngle;
 
 
 	}
@@ -210,8 +221,8 @@ public class NetworkClient : MonoBehaviour {
 	public void updateInformationLabel() {
 		GameObject obj = GameObject.Find("camDirectionLabel");
 		var txtCp = obj.GetComponent<Text>();
-		Vector3 camtr = Camera.main.transform.localEulerAngles;
-		var angle_h = (camtr.y + this.calibrationAngle) % 360.0;
+		Vector3 camtr = Camera.main.transform.eulerAngles;
+		var angle_h =(camtr.y + this.calibrationAngle) % 360.0;
 		if (angle_h < 0) angle_h += 360.0;
 		var angle_v = camtr.x - 360.0f;
 		String txt = String.Format("H:{0:##} / V:{1:##}", angle_h, angle_v);

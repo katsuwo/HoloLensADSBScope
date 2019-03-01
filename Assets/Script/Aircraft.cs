@@ -92,7 +92,7 @@ namespace Aircraft {
 
 		// set Unity's world position from latitude and longitude
 		public void setWorldPosition() {
-			var tmpDir = (this.getDirection(this.latitude, this.longitude) /*- calibrationAngle*/);
+			var tmpDir = (this.getDirection(this.latitude, this.longitude) - this.calibrationAngle);
 			if (tmpDir < 0) tmpDir += 360.0;
 			this.direction = tmpDir;
 			this.distance = this.getDistance(this.latitude, this.longitude);
@@ -106,9 +106,6 @@ namespace Aircraft {
 
 		public void setLabelPosition() {
 			Vector3 camtr = Camera.main.transform.rotation.eulerAngles;
-			Debug.Log(camtr);
-			Debug.Log(this.direction);
-
 			//機体への角度と、カメラの方向が±120を超える場合は描画しない
 			//（Canvasの裏側からTextとLabelが描画される不具合の対策）
 			var diff = camtr.y - this.direction;
@@ -156,7 +153,7 @@ namespace Aircraft {
 			var distanceText = string.Format("{0:####.##}km", this.distance / 1000.0);
 			var altText = string.Format("{0:#####.#}ft", this.altitude);
 			var csText = this.callsign.Replace("_", "");
-			this.text = $"{csText}\n{altText}:{distanceText}\n{this.icao}";
+			this.text = $"{csText}\n{altText}:{distanceText}\n{this.icao}\n{((this.direction+this.calibrationAngle)%360.0).ToString()}";
 
 			if (this.text != this.oldText) {
 				uiText.text = this.text;
