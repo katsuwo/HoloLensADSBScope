@@ -83,25 +83,39 @@ namespace Aircraft {
 		}
 
 		//set position of Aircraft with latitude and longitude
-		public void setPositionWithCoordinate(double latitude, double longitude, double altitude) {
-			if (this.latitude == latitude && this.longitude == longitude && this.altitude == altitude) return;
+		public bool setPositionWithCoordinate(double latitude, double longitude, double altitude) {
+			if (this.latitude == latitude && this.longitude == longitude && this.altitude == altitude) return false;
+
+			//warp check
+			if ((getDistance(this.latitude, this.longitude, latitude, longitude) > 10.0 * 1000.0) && (this.latitude != 0.0 && this.longitude != 0.0)) {
+				Debug.Log("WARP");
+				return false;
+			}	
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.altitude = altitude;
+
+			 return this.setWorldPosition();
 		}
 
 		// set Unity's world position from latitude and longitude
-		public void setWorldPosition() {
+		public bool setWorldPosition() {
 			var tmpDir = (this.getDirection(this.latitude, this.longitude) - this.calibrationAngle);
 			if (tmpDir < 0) tmpDir += 360.0;
 			this.direction = tmpDir;
-			this.distance = this.getDistance(this.latitude, this.longitude);
-
-			this.world_x = (float)(this.distance * System.Math.Sin(deg2rad(this.direction)));
-			this.world_y = (float)(this.distance * System.Math.Cos(deg2rad(this.direction)));
-			this.world_alt = (float)((this.altitude * 0.33) - this.originAltitude);
-			this.bodyObject.transform.position = new Vector3(this.world_x, this.world_alt, this.world_y);
-			this.setLabelPosition();
+			this.distance = this.getDistance(this.originLatitude, originLongitude,  this.latitude, this.longitude);
+			var tmpx = (float)(this.distance * System.Math.Sin(deg2rad(this.direction)));
+			var tmpy = (float)(this.distance * System.Math.Cos(deg2rad(this.direction)));
+			var tmpalt = (float)((this.altitude * 0.33) - this.originAltitude);
+			if (this.world_x != tmpx || this.world_y != tmpy || this.world_alt != tmpalt) {
+				this.world_x = tmpx;
+				this.world_y = tmpy;
+				this.world_alt = tmpalt;
+				this.bodyObject.transform.position = new Vector3(this.world_x, this.world_alt, this.world_y);
+				this.setLabelPosition();
+				return true;
+			}
+			return false;
 		}
 
 		public void setLabelPosition() {
@@ -137,11 +151,11 @@ namespace Aircraft {
 		}
 
 		//calculate distance from camera position to aircraft 
-		public double getDistance(double latitude, double longitude) {
-			var lat1 = deg2rad(this.originLatitude);
-			var lng1 = deg2rad(this.originLongitude);
-			var lat2 = deg2rad(latitude);
-			var lng2 = deg2rad(longitude);
+		public double getDistance(double latitude1, double longitude1, double latitude2, double longitude2) {
+			var lat1 = deg2rad(latitude1);
+			var lng1 = deg2rad(longitude1);
+			var lat2 = deg2rad(latitude2);
+			var lng2 = deg2rad(longitude2);
 			var r = 6378137.0;
 			var avelat = (lat1 - lat2) / 2;
 			var avelng = (lng1 - lng2) / 2;
@@ -153,7 +167,7 @@ namespace Aircraft {
 			var distanceText = string.Format("{0:####.##}km", this.distance / 1000.0);
 			var altText = string.Format("{0:#####.#}ft", this.altitude);
 			var csText = this.callsign.Replace("_", "");
-			this.text = $"{csText}\n{altText}:{distanceText}\n{this.icao}\n{((this.direction+this.calibrationAngle)%360.0).ToString()}";
+			this.text = $"{csText}\n{altText}:{distanceText}\n{this.icao}";
 
 			if (this.text != this.oldText) {
 				uiText.text = this.text;

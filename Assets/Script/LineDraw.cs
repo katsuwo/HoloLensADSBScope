@@ -7,6 +7,7 @@ public  class LineDraw : MonoBehaviour {
 
 
 	static Dictionary<string, List<Vector3>> strokeSet = new Dictionary<string, List<Vector3>>();
+	static Dictionary<string, List<Color>> colorSet = new Dictionary<string, List<Color>>();
 
 	//https://qiita.com/arcsin16/items/7249b272f19e5412ea94
 	public void OnRenderObject() {
@@ -22,8 +23,12 @@ public  class LineDraw : MonoBehaviour {
 		var keys = strokeSet.Keys;
 		foreach (KeyValuePair<string, List<Vector3>> kvp in strokeSet as Dictionary<string, List<Vector3>>) {
 			GL.Begin(GL.LINE_STRIP);
+			List<Color> colorlist = colorSet[kvp.Key];
+			int i = 0;
 			foreach (var stroke in kvp.Value) {
-				GL.Color(new Color( 1.0f, 0.0f ,0.0f,1.0f));
+				var col = colorlist[i++];
+//				GL.Color(new Color( 1.0f, 0.0f ,0.0f,0.5f));
+				GL.Color(col);
 				GL.Vertex(stroke);
 			}
 			GL.End();
@@ -32,15 +37,23 @@ public  class LineDraw : MonoBehaviour {
 	}
 
 	public void addStrokeSet(string icao) {
-		List<Vector3> newList = new List<Vector3>();
-		strokeSet.Add(icao, newList);
-	}
-	
-	public void addStroke(string icao, Vector3 point) {
-		List<Vector3> l = strokeSet[icao];
-		l.Add(point);
+		List<Vector3> pointList = new List<Vector3>();
+		List<Color> colorList = new List<Color>();
+		strokeSet.Add(icao, pointList);
+		colorSet.Add(icao, colorList);
 	}
 
+	public void addStroke(string icao, Vector3 point, Color color) {
+		List<Vector3> pointList = strokeSet[icao];
+		List<Color> colorList = colorSet[icao];
+		pointList.Add(point);
+		colorList.Add(color);
+	}
+
+
+	public void removeStrokeSet(string icao) {
+		strokeSet.Remove(icao);
+	}
 
 	static void CreateLineMaterial() {
 		if (!lineMaterial) {

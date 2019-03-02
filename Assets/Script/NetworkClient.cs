@@ -31,17 +31,25 @@ public class NetworkClient : MonoBehaviour {
 	private float dumangle = 0.0f;
 	public GameObject linedrawObj = null;
 	private LineDraw ld = null;
-	// Use this for initialization
+	public string serverAddress = "";
+
+
 	void Start() {
+		//Destroy camera of Calibrate Scene
+		GameObject cam1 = GameObject.Find("MixedRealityCameraCalibrateScene");
+		GameObject cam2 = GameObject.Find("MixedRealityCameraStartScens");
+		Destroy(cam1);
+		Destroy(cam2);
+
 		myCanvas = GameObject.Find("InfoCanvas");
 		myCanvas.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
 		myCanvas.transform.localEulerAngles = new Vector3(0, 0, 0);
 		StartCoroutine(getText(true));
-		//Destroy camera of Calibrate Scene
-		GameObject cam = GameObject.Find("MixedRealityCameraCalibrateScene");
-		Destroy(cam);
 		linedrawObj = GameObject.Find("LineDraw");
 		ld = (LineDraw)linedrawObj.GetComponent<LineDraw>();
+		ld.addStrokeSet("CAMERA");
+		serverAddress = startSceneObject.getServerAddress();
+		Debug.Log(serverAddress);
 	}
 
 	// Update is called once per frame
@@ -56,12 +64,15 @@ public class NetworkClient : MonoBehaviour {
 		if (timeElapsed >= 0.5f) {
 			StartCoroutine(getText(false));
 			timeElapsed = 0.0f;
+			Vector3 camPosition = Camera.main.transform.position;
+			ld.addStroke("CAMERA", new Vector3(camPosition.x, camPosition.y - 1, camPosition.z), new Color(0.5f, 0.5f, 0, 0.3f));
 		}
 
 		List<string> deleteList = new List<string>();
 		foreach (KeyValuePair<string, Aircraft.Aircraft> kvp in aircrafts) {
 			Aircraft.Aircraft ac = aircrafts[kvp.Key];
 			if (this.readTime - ac.updateTimestamp > deleteInterval) {
+				this.playDisapearSound();
 				Destroy(ac.labelObject);
 				Destroy(ac.bodyObject);
 				Destroy(ac.targetBox);
@@ -69,12 +80,13 @@ public class NetworkClient : MonoBehaviour {
 			}
 			else {
 				ac.calibrationAngle = this.calibrationAngle;
-				ac.setWorldPosition();
+				ac.setLabelPosition();
 			}
 		}
 
 		foreach (string ac in deleteList) {
 			aircrafts.Remove(ac);
+			ld.removeStrokeSet(ac);
 		}
 
 		updateInformationLabel();
@@ -85,14 +97,14 @@ public class NetworkClient : MonoBehaviour {
 		string url = "";
 
 		if (dbClear == true) {
-			url = "http://192.168.10.88:5000/clear";
+			url = $"http://{serverAddress}:5000/clear";
 		}
 		else {
 			if (this.aircrafts.Count == 0) {
-				url = "http://192.168.10.88:5000/all";
+				url = $"http://{serverAddress}:5000/all";
 			}
 			else {
-				url = "http://192.168.10.88:5000/lastupdate/" + readTime;
+				url = $"http://{serverAddress}:5000/lastupdate/" + readTime;
 			}
 		}
 		request = new WWW(url);
@@ -145,10 +157,13 @@ public class NetworkClient : MonoBehaviour {
 						var tmpLongitude = (double)tmpDic["longitude"];
 						var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
 						var tmpCallsign = (string)tmpDic["callsign"];
+						ac.updateTimestamp = (int)(double)tmpDic["update_time_stamp"];
 						ac.callsign = tmpCallsign;
-						ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
+						bool isMoved = ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
 						ac.setTextInfo();
-						ld.addStroke(icao, ac.bodyObject.transform.position);
+						if (isMoved == true) {
+							ld.addStroke(icao, ac.bodyObject.transform.position, this.convertAlt2Color(tmpAltitude));
+						}
 					}
 					catch (System.InvalidCastException e) {
 						ac.latitude = 0;
@@ -183,6 +198,15 @@ public class NetworkClient : MonoBehaviour {
 		newobj.name = icao;
 		return newobj;
 	}
+
+	public Color convertAlt2Color(double alt) {
+		var tmpAlt = alt / 100.0;
+		if (tmpAlt > 300.0) { tmpAlt = 300.0; }
+		float tmpColor1 = (float)( tmpAlt/ 300.0);
+		float tmpColor2 = (float)(1.0 - tmpColor1);
+		return new Color(0.0f, tmpColor1, tmpColor2);
+	}
+
 
 	public GameObject makeLabelObject(string icao) {
 		var canvas = GameObject.Find("InfoCanvas");
@@ -252,6 +276,11 @@ public class NetworkClient : MonoBehaviour {
 		return 180 * radian / System.Math.PI;
 	}
 
+	public void playDisapearSound() {
+		GameObject cube_org = GameObject.Find("Cube_Original");
+		AudioSource sound = cube_org.GetComponents<AudioSource>()[1];
+		sound.Play();
+	}
 
 	public void openningEffect() {
 		if (openningCounter < 50.0) {

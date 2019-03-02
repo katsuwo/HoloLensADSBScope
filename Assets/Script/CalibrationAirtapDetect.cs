@@ -34,6 +34,7 @@ public class CalibrationAirtapDetect : MonoBehaviour, IInputClickHandler {
 
 	private void movetoMainScene() {
 		SceneManager.UnloadScene("CalibrationScene");
+		Destroy(GameObject.Find("MixedRealityCameraParentCalibrateScene"));
 		SceneManager.LoadScene("scene1");
 	}
 }
