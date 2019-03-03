@@ -122,7 +122,10 @@ namespace Aircraft {
 			Vector3 camtr = Camera.main.transform.rotation.eulerAngles;
 			//機体への角度と、カメラの方向が±120を超える場合は描画しない
 			//（Canvasの裏側からTextとLabelが描画される不具合の対策）
-			var diff = camtr.y - this.direction;
+			float diff = 0;
+			if (camtr.y > (float)this.direction) { diff = camtr.y - (float)this.direction; }
+			else { diff = (float)this.direction - camtr.y; }
+			
 //			var diff = ((camtr.y + calibrationAngle) - this.direction) % 360.0;
 			if (diff > 120 || diff < -120) {
 				this.labelObject.SetActive(false);

@@ -31,16 +31,18 @@ public class NetworkClient : MonoBehaviour {
 	private float dumangle = 0.0f;
 	public GameObject linedrawObj = null;
 	private LineDraw ld = null;
-	public string serverAddress = "";
+	public string SERVERADDRESS = "192.168.10.88";
 
+	GameObject N_Object;
+	GameObject E_Object;
+	GameObject S_Object;
+	GameObject W_Object;
 
 	void Start() {
 		//Destroy camera of Calibrate Scene
 		GameObject cam1 = GameObject.Find("MixedRealityCameraCalibrateScene");
-		GameObject cam2 = GameObject.Find("MixedRealityCameraStartScens");
 		Destroy(cam1);
-		Destroy(cam2);
-
+	
 		myCanvas = GameObject.Find("InfoCanvas");
 		myCanvas.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
 		myCanvas.transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -48,18 +50,22 @@ public class NetworkClient : MonoBehaviour {
 		linedrawObj = GameObject.Find("LineDraw");
 		ld = (LineDraw)linedrawObj.GetComponent<LineDraw>();
 		ld.addStrokeSet("CAMERA");
-		serverAddress = startSceneObject.getServerAddress();
-		Debug.Log(serverAddress);
+		N_Object = GameObject.Find("N_Text");
+		S_Object = GameObject.Find("S_Text");
+		E_Object = GameObject.Find("E_Text");
+		W_Object = GameObject.Find("W_Text");
 	}
 
 	// Update is called once per frame
 	void Update() {
-/*
-		if (isOpening == true) {
-			openningEffect();
-			return;
-		}
-*/
+		/*
+				if (isOpening == true) {
+					openningEffect();
+					return;
+				}
+		*/
+
+
 		timeElapsed += Time.deltaTime;
 		if (timeElapsed >= 0.5f) {
 			StartCoroutine(getText(false));
@@ -90,6 +96,7 @@ public class NetworkClient : MonoBehaviour {
 		}
 
 		updateInformationLabel();
+		setupNESWLabel();
 	}
 
 	IEnumerator getText(bool dbClear) {
@@ -97,14 +104,14 @@ public class NetworkClient : MonoBehaviour {
 		string url = "";
 
 		if (dbClear == true) {
-			url = $"http://{serverAddress}:5000/clear";
+			url = $"http://{SERVERADDRESS}:5000/clear";
 		}
 		else {
 			if (this.aircrafts.Count == 0) {
-				url = $"http://{serverAddress}:5000/all";
+				url = $"http://{SERVERADDRESS}:5000/all";
 			}
 			else {
-				url = $"http://{serverAddress}:5000/lastupdate/" + readTime;
+				url = $"http://{SERVERADDRESS}:5000/lastupdate/" + readTime;
 			}
 		}
 		request = new WWW(url);
@@ -176,30 +183,51 @@ public class NetworkClient : MonoBehaviour {
 	//	ld.OnRenderObject();
 	}
 
-	public void setCalibration() {
+
+	private void setupNESWLabel() {
+		/*
+		this.direction = tmpDir;
+		this.distance = this.getDistance(this.originLatitude, originLongitude, this.latitude, this.longitude);
+		var tmpx = (float)(this.distance * System.Math.Sin(deg2rad(this.direction)));
+		var tmpy = (float)(this.distance * System.Math.Cos(deg2rad(this.direction)));
+		*/
+		this.setupDirectionLabelPosition(N_Object, 0.0f - calibrationAngle, 1000, -20);
+		this.setupDirectionLabelPosition(E_Object, 90.0f - calibrationAngle, 1000, -20);
+		this.setupDirectionLabelPosition(S_Object, 180.0f - calibrationAngle, 1000, -20);
+		this.setupDirectionLabelPosition(W_Object, 270.0f - calibrationAngle, 1000, -20);
+
+		N_Object.transform.LookAt(Camera.main.transform);
+		W_Object.transform.LookAt(Camera.main.transform);
+		E_Object.transform.LookAt(Camera.main.transform);
+		S_Object.transform.LookAt(Camera.main.transform);
+		N_Object.transform.Rotate(new Vector3(0, -180.0f, 0));
+		W_Object.transform.Rotate(new Vector3(0, -180.0f, 0));
+		E_Object.transform.Rotate(new Vector3(0, -180.0f, 0));
+		S_Object.transform.Rotate(new Vector3(0, -180.0f, 0));
+
+	}
+	private void setupDirectionLabelPosition(GameObject target, float direction, float distance, float alt) {
+		var tmpx = (float)(distance * System.Math.Sin(deg2rad(direction)));
+		var tmpy = (float)(distance * System.Math.Cos(deg2rad(direction)));
+		target.transform.position = new Vector3(tmpx, alt, tmpy);
+	}
+
+	private void setCalibration() {
 		GameObject obj = GameObject.Find("MixedRealityCameraParent");
 		Vector3 newAngle = new Vector3(0.0f, this.dumangle, 0.0f);
 		obj.transform.localEulerAngles = newAngle;
 		Debug.Log(obj.transform.localEulerAngles);
 		dumangle += 1.0f;
-
-//		GameObject obj = GameObject.Find("MixedRealityCamera");
-//		Vector3 newAngle = new Vector3(0.0f, this.calibrationAngle, 0.0f);
-//		Debug.Log(obj.transform.localEulerAngles);
-//		Debug.Log(obj.transform.eulerAngles);
-//		obj.transform.localEulerAngles = newAngle;
-
-
 	}
-	
-	public GameObject makeGameObject(string icao) {
+
+	private GameObject makeGameObject(string icao) {
 		GameObject obj = GameObject.Find("Cube_Original");
 		GameObject newobj = Instantiate(obj, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
 		newobj.name = icao;
 		return newobj;
 	}
 
-	public Color convertAlt2Color(double alt) {
+	private Color convertAlt2Color(double alt) {
 		var tmpAlt = alt / 100.0;
 		if (tmpAlt > 300.0) { tmpAlt = 300.0; }
 		float tmpColor1 = (float)( tmpAlt/ 300.0);
@@ -208,7 +236,7 @@ public class NetworkClient : MonoBehaviour {
 	}
 
 
-	public GameObject makeLabelObject(string icao) {
+	private GameObject makeLabelObject(string icao) {
 		var canvas = GameObject.Find("InfoCanvas");
 		GameObject newobj = new GameObject("Text");
 		newobj.transform.parent = canvas.transform;
@@ -226,7 +254,7 @@ public class NetworkClient : MonoBehaviour {
 		return newobj;
 	}
 
-	public GameObject makeTargetBox(string icao) {
+	private GameObject makeTargetBox(string icao) {
 		var canvas = GameObject.Find("InfoCanvas");
 		GameObject newobj = new GameObject("Image");
 		newobj.transform.parent = canvas.transform;
@@ -242,7 +270,7 @@ public class NetworkClient : MonoBehaviour {
 		return newobj;
 	}
 
-	public void updateInformationLabel() {
+	private void updateInformationLabel() {
 		GameObject obj = GameObject.Find("camDirectionLabel");
 		var txtCp = obj.GetComponent<Text>();
 		Vector3 camtr = Camera.main.transform.eulerAngles;
@@ -258,7 +286,7 @@ public class NetworkClient : MonoBehaviour {
 		txtCp2.text = txt2;
 	}
 
-	public double calibrateDirection() {
+	private double calibrateDirection() {
 		var y2 = deg2rad(this.calibration_lat);
 		var x2 = deg2rad(this.calibration_lng);
 		var y1 = deg2rad(this.current_lat);
@@ -269,20 +297,20 @@ public class NetworkClient : MonoBehaviour {
 		if (ret < 0) { ret += 360.0; }
 		return ret;
 	}
-	public double deg2rad(double degree) {
+	private double deg2rad(double degree) {
 		return degree * System.Math.PI / 180.0;
 	}
-	public double rad2deg(double radian) {
+	private double rad2deg(double radian) {
 		return 180 * radian / System.Math.PI;
 	}
 
-	public void playDisapearSound() {
+	private void playDisapearSound() {
 		GameObject cube_org = GameObject.Find("Cube_Original");
 		AudioSource sound = cube_org.GetComponents<AudioSource>()[1];
 		sound.Play();
 	}
 
-	public void openningEffect() {
+	private void openningEffect() {
 		if (openningCounter < 50.0) {
 			GameObject obj = GameObject.Find("openning");
 			GameObject newobj = Instantiate(obj, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);

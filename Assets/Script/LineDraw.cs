@@ -33,6 +33,31 @@ public  class LineDraw : MonoBehaviour {
 			}
 			GL.End();
 		}
+
+
+		for( float r = 10.0f; r <= 1000.0f; r+= 25.0f) {
+			GL.Begin(GL.LINE_STRIP);
+			for (float l = 0; l <= 360.0; l += 3.0f) {
+				var tmpx = (float)(r * System.Math.Sin(deg2rad(l)));
+				var tmpy = (float)(r * System.Math.Cos(deg2rad(l)));
+				GL.Color(new Color(0.0f, 0.5f, 0.5f, 1.0f));
+				GL.Vertex(new Vector3(tmpx, -2.0f, tmpy));
+			}
+			GL.End();
+		}
+
+
+		for (float l = 0; l <= 360.0; l += 10.0f) {
+			GL.Begin(GL.LINE_STRIP);
+			var tmpx = (float)(1000.0f * System.Math.Sin(deg2rad(l)));
+			var tmpy = (float)(1000.0f * System.Math.Cos(deg2rad(l)));
+			GL.Color(new Color(0.0f, 0.5f, 0.5f, 1.0f));
+			GL.Vertex(new Vector3(tmpx, -2.0f, tmpy));
+			GL.Vertex(new Vector3(0, -2.0f, 0));
+			GL.End();
+		}
+
+
 		GL.PopMatrix();
 	}
 
@@ -70,5 +95,11 @@ public  class LineDraw : MonoBehaviour {
 			// Turn off depth writes
 			lineMaterial.SetInt("_ZWrite", 0);
 		}
+	}
+	private double deg2rad(double degree) {
+		return degree * System.Math.PI / 180.0;
+	}
+	private double rad2deg(double radian) {
+		return 180 * radian / System.Math.PI;
 	}
 }
