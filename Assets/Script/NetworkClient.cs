@@ -21,7 +21,7 @@ public class NetworkClient : MonoBehaviour {
 	private float timeElapsed = 0.0f;
 	private float calibrationAngle = 0f;
 
-	private int deleteInterval = 120;
+	private int deleteInterval = 180;
 
 	private float drawPos = 0.0f;
 	private float drawPos2 = -500.0f;
@@ -32,12 +32,14 @@ public class NetworkClient : MonoBehaviour {
 	public GameObject linedrawObj = null;
 	private LineDraw ld = null;
 	public string SERVERADDRESS = "192.168.10.88";
-
+	private int framCounter = 0;
 	GameObject N_Object;
 	GameObject E_Object;
 	GameObject S_Object;
 	GameObject W_Object;
 
+	private int LINERESERVETIME = 5 * 60 * 60;
+	
 	void Start() {
 		//Destroy camera of Calibrate Scene
 		GameObject cam1 = GameObject.Find("MixedRealityCameraCalibrateScene");
@@ -46,7 +48,7 @@ public class NetworkClient : MonoBehaviour {
 		myCanvas = GameObject.Find("InfoCanvas");
 		myCanvas.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
 		myCanvas.transform.localEulerAngles = new Vector3(0, 0, 0);
-		StartCoroutine(getText(true));
+		StartCoroutine(RequestAircraftDatas(true));
 		linedrawObj = GameObject.Find("LineDraw");
 		ld = (LineDraw)linedrawObj.GetComponent<LineDraw>();
 		ld.addStrokeSet("CAMERA");
@@ -66,9 +68,10 @@ public class NetworkClient : MonoBehaviour {
 		*/
 
 
+		framCounter++;
 		timeElapsed += Time.deltaTime;
 		if (timeElapsed >= 0.5f) {
-			StartCoroutine(getText(false));
+			StartCoroutine(RequestAircraftDatas(false));
 			timeElapsed = 0.0f;
 			Vector3 camPosition = Camera.main.transform.position;
 			ld.addStroke("CAMERA", new Vector3(camPosition.x, camPosition.y - 1, camPosition.z), new Color(0.5f, 0.5f, 0, 0.3f));
@@ -77,10 +80,12 @@ public class NetworkClient : MonoBehaviour {
 		List<string> deleteList = new List<string>();
 		foreach (KeyValuePair<string, Aircraft.Aircraft> kvp in aircrafts) {
 			Aircraft.Aircraft ac = aircrafts[kvp.Key];
-			if (this.readTime - ac.updateTimestamp > deleteInterval) {
+			
+			//10秒に一度、消去が必要かチェック	
+			if ((framCounter % 600 == 0) && (this.readTime - ac.updateTimestamp > deleteInterval)) {
 				this.playDisapearSound();
-				Destroy(ac.labelObject);
 				Destroy(ac.bodyObject);
+				Destroy(ac.labelObject);
 				Destroy(ac.targetBox);
 				deleteList.Add(kvp.Key);
 			}
@@ -95,11 +100,11 @@ public class NetworkClient : MonoBehaviour {
 			ld.removeStrokeSet(ac);
 		}
 
-		updateInformationLabel();
-		setupNESWLabel();
+		UpdateInformationLabel();
+		SetupNESWLabels();
 	}
 
-	IEnumerator getText(bool dbClear) {
+	IEnumerator RequestAircraftDatas(bool dbClear) {
 		WWW request;
 		string url = "";
 
@@ -143,33 +148,33 @@ public class NetworkClient : MonoBehaviour {
 				foreach (KeyValuePair<string, object> kvp in items as Dictionary<string, object>) {
 					var tmpDic = (IDictionary)Json.Deserialize(kvp.Value as string);
 					string icao = (string)tmpDic["icao"];
-					//					if (icao != "8511CA") continue;
+					var tmpLatitude = (double)tmpDic["latitude"];
+					var tmpLongitude = (double)tmpDic["longitude"];
+					var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
+					var tmpCallsign = (string)tmpDic["callsign"];
+					if (tmpLatitude == 0.0 && tmpLongitude == 0.0 && tmpAltitude == 0.0) { continue; }
+					//				if (icao != "867592") continue;
 					if (!this.aircrafts.ContainsKey(icao)) {
 						var newac = new Aircraft.Aircraft();
 						newac.canvas = myCanvas;
-						newac.calibrationAngle = this.calibrationAngle;
-						newac.updateTimestamp = (int)(double)tmpDic["update_time_stamp"];
 						newac.icao = icao;
-						newac.setOriginPointWithCoordinate(current_lat, current_lng, current_alt);
-						newac.bodyObject = this.makeGameObject(icao);
-						newac.labelObject = this.makeLabelObject(icao);
-						newac.targetBox = this.makeTargetBox(icao);
+						newac.bodyObject = this.BuildBodyObject(icao);
+						newac.labelObject = this.BuildLabelObject(icao);
+						newac.targetBox = this.BuildTargetBox(icao);
 						aircrafts.Add(icao, newac);
 						ld.addStrokeSet(icao);
 					}
 
 					Aircraft.Aircraft ac = this.aircrafts[icao];
 					try {
-						var tmpLatitude = (double)tmpDic["latitude"];
-						var tmpLongitude = (double)tmpDic["longitude"];
-						var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
-						var tmpCallsign = (string)tmpDic["callsign"];
+						ac.calibrationAngle = this.calibrationAngle;
+						ac.setOriginPointWithCoordinate(current_lat, current_lng, current_alt);
 						ac.updateTimestamp = (int)(double)tmpDic["update_time_stamp"];
 						ac.callsign = tmpCallsign;
 						bool isMoved = ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
 						ac.setTextInfo();
 						if (isMoved == true) {
-							ld.addStroke(icao, ac.bodyObject.transform.position, this.convertAlt2Color(tmpAltitude));
+							ld.addStroke(icao, ac.bodyObject.transform.position, this.ConvertAltitude2Color(tmpAltitude));
 						}
 					}
 					catch (System.InvalidCastException e) {
@@ -184,18 +189,11 @@ public class NetworkClient : MonoBehaviour {
 	}
 
 
-	private void setupNESWLabel() {
-		/*
-		this.direction = tmpDir;
-		this.distance = this.getDistance(this.originLatitude, originLongitude, this.latitude, this.longitude);
-		var tmpx = (float)(this.distance * System.Math.Sin(deg2rad(this.direction)));
-		var tmpy = (float)(this.distance * System.Math.Cos(deg2rad(this.direction)));
-		*/
-		this.setupDirectionLabelPosition(N_Object, 0.0f - calibrationAngle, 1000, -20);
-		this.setupDirectionLabelPosition(E_Object, 90.0f - calibrationAngle, 1000, -20);
-		this.setupDirectionLabelPosition(S_Object, 180.0f - calibrationAngle, 1000, -20);
-		this.setupDirectionLabelPosition(W_Object, 270.0f - calibrationAngle, 1000, -20);
-
+	private void SetupNESWLabels() {
+		this.SetupDirectionLabelPosition(N_Object, 0.0f - calibrationAngle, 1000, -20);
+		this.SetupDirectionLabelPosition(E_Object, 90.0f - calibrationAngle, 1000, -20);
+		this.SetupDirectionLabelPosition(S_Object, 180.0f - calibrationAngle, 1000, -20);
+		this.SetupDirectionLabelPosition(W_Object, 270.0f - calibrationAngle, 1000, -20);
 		N_Object.transform.LookAt(Camera.main.transform);
 		W_Object.transform.LookAt(Camera.main.transform);
 		E_Object.transform.LookAt(Camera.main.transform);
@@ -204,15 +202,15 @@ public class NetworkClient : MonoBehaviour {
 		W_Object.transform.Rotate(new Vector3(0, -180.0f, 0));
 		E_Object.transform.Rotate(new Vector3(0, -180.0f, 0));
 		S_Object.transform.Rotate(new Vector3(0, -180.0f, 0));
-
 	}
-	private void setupDirectionLabelPosition(GameObject target, float direction, float distance, float alt) {
+
+	private void SetupDirectionLabelPosition(GameObject target, float direction, float distance, float alt) {
 		var tmpx = (float)(distance * System.Math.Sin(deg2rad(direction)));
 		var tmpy = (float)(distance * System.Math.Cos(deg2rad(direction)));
 		target.transform.position = new Vector3(tmpx, alt, tmpy);
 	}
 
-	private void setCalibration() {
+	private void SetCalibrationAnble() {
 		GameObject obj = GameObject.Find("MixedRealityCameraParent");
 		Vector3 newAngle = new Vector3(0.0f, this.dumangle, 0.0f);
 		obj.transform.localEulerAngles = newAngle;
@@ -220,14 +218,14 @@ public class NetworkClient : MonoBehaviour {
 		dumangle += 1.0f;
 	}
 
-	private GameObject makeGameObject(string icao) {
+	private GameObject BuildBodyObject(string icao) {
 		GameObject obj = GameObject.Find("Cube_Original");
 		GameObject newobj = Instantiate(obj, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
 		newobj.name = icao;
 		return newobj;
 	}
 
-	private Color convertAlt2Color(double alt) {
+	private Color ConvertAltitude2Color(double alt) {
 		var tmpAlt = alt / 100.0;
 		if (tmpAlt > 300.0) { tmpAlt = 300.0; }
 		float tmpColor1 = (float)( tmpAlt/ 300.0);
@@ -236,7 +234,7 @@ public class NetworkClient : MonoBehaviour {
 	}
 
 
-	private GameObject makeLabelObject(string icao) {
+	private GameObject BuildLabelObject(string icao) {
 		var canvas = GameObject.Find("InfoCanvas");
 		GameObject newobj = new GameObject("Text");
 		newobj.transform.parent = canvas.transform;
@@ -245,16 +243,19 @@ public class NetworkClient : MonoBehaviour {
 		RectTransform rt = newobj.GetComponent<RectTransform>();
 		var tmpVect = rt.transform.eulerAngles;
 		rt.transform.Rotate(new Vector3(0.0f, 0.0f, 0.0f));
+		rt.anchoredPosition = new Vector2(110.0f, 40.0f); //効いてなさそう
 		Text text = newobj.GetComponent<Text>();
-		text.fontSize = 10;
+		text.fontSize = 16;
+		text.fontStyle = FontStyle.Bold;
 		text.alignment = TextAnchor.UpperCenter;
 		text.text = "";
 		text.font = Resources.FindObjectsOfTypeAll<Font>()[0];
 		text.color = new Color(1, 0, 0);
+		text.rectTransform.sizeDelta = new Vector2(150, 150);
 		return newobj;
 	}
 
-	private GameObject makeTargetBox(string icao) {
+	private GameObject BuildTargetBox(string icao) {
 		var canvas = GameObject.Find("InfoCanvas");
 		GameObject newobj = new GameObject("Image");
 		newobj.transform.parent = canvas.transform;
@@ -270,7 +271,7 @@ public class NetworkClient : MonoBehaviour {
 		return newobj;
 	}
 
-	private void updateInformationLabel() {
+	private void UpdateInformationLabel() {
 		GameObject obj = GameObject.Find("camDirectionLabel");
 		var txtCp = obj.GetComponent<Text>();
 		Vector3 camtr = Camera.main.transform.eulerAngles;

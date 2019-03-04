@@ -4,7 +4,7 @@ using UnityEngine;
 
 public  class LineDraw : MonoBehaviour {
 	static Material lineMaterial;
-
+	static public int STOROKEMAX = 1000;
 
 	static Dictionary<string, List<Vector3>> strokeSet = new Dictionary<string, List<Vector3>>();
 	static Dictionary<string, List<Color>> colorSet = new Dictionary<string, List<Color>>();
@@ -71,6 +71,11 @@ public  class LineDraw : MonoBehaviour {
 	public void addStroke(string icao, Vector3 point, Color color) {
 		List<Vector3> pointList = strokeSet[icao];
 		List<Color> colorList = colorSet[icao];
+
+		if (pointList.Count >= STOROKEMAX) {
+			pointList.RemoveAt(0);
+			colorList.RemoveAt(0);
+		}
 		pointList.Add(point);
 		colorList.Add(color);
 	}

@@ -50,19 +50,24 @@ namespace Aircraft {
 		[SerializeField]
 		public int updateTimestamp = 0;
 
-
-		public double direction = 0.0f;
+		//補正角
 		public double calibrationAngle = 0.0f;
+
+
+		/// <summary>
+		/// Distance:カメラからの距離
+		/// direction:カメラからの方位
+		/// </summary>
+		public double direction = 0.0f;
 		public double distance = 0.0f;
 
-
-		[SerializeField]
+		/// <summary>
+		/// bodyObject:機体オブジェクト
+		/// labelObject:機体情報ラベルオブジェクト
+		/// targetBox：機体位置ボックス
+		/// </summary>
 		public GameObject bodyObject { get; set; } = null;
-
-		[SerializeField]
 		public GameObject labelObject { get; set; } = null;
-
-		[SerializeField]
 		public GameObject targetBox { get; set; } = null;
 
 
@@ -75,14 +80,28 @@ namespace Aircraft {
 		}
 
 
-		//setUser's position with latitude and longitude
+		/// <summary>
+		/// set camera position with latitude and longitude
+		/// </summary>
+		/// <param name="latitude">Latitude of Camera</param>
+		/// <param name="longitude">Longitude of Camera</param>
+		/// <param name="altitude">Altitude of Camera</param>
 		public void setOriginPointWithCoordinate(double latitude, double longitude, double altitude) {
 			this.originLatitude = latitude;
 			this.originLongitude = longitude;
 			this.originAltitude = altitude;
 		}
 
-		//set position of Aircraft with latitude and longitude
+		/// <summary>
+		/// set aircraft position  with latitude and longitude
+		/// </summary>
+		/// <param name="latitude">latitude of aircract</param>
+		/// <param name="longitude">Longitude of aircraft</param>
+		/// <param name="altitude">Altitude of aircraft</param>
+		/// <returns>
+		/// false: Invalid position or warped
+		/// true: position is valid.
+		/// </returns>
 		public bool setPositionWithCoordinate(double latitude, double longitude, double altitude) {
 			if (this.latitude == latitude && this.longitude == longitude && this.altitude == altitude) return false;
 
@@ -98,7 +117,12 @@ namespace Aircraft {
 			 return this.setWorldPosition();
 		}
 
-		// set Unity's world position from latitude and longitude
+		/// <summary>
+		/// set Unity's world position from latitude and longitude
+		/// </summary>
+		/// <returns>
+		/// true: WorldPosition is set normaly
+		/// false: WorldPosition isn't set.because aircraft is not moved.</returns>
 		public bool setWorldPosition() {
 			var tmpDir = (this.getDirection(this.latitude, this.longitude) - this.calibrationAngle);
 			if (tmpDir < 0) tmpDir += 360.0;
@@ -118,14 +142,16 @@ namespace Aircraft {
 			return false;
 		}
 
+		/// <summary>
+		/// setup Label / target box position on cavas.
+		/// </summary>
 		public void setLabelPosition() {
 			Vector3 camtr = Camera.main.transform.rotation.eulerAngles;
 			//機体への角度と、カメラの方向が±120を超える場合は描画しない
 			//（Canvasの裏側からTextとLabelが描画される不具合の対策）
-			float diff = 0;
-			if (camtr.y > (float)this.direction) { diff = camtr.y - (float)this.direction; }
-			else { diff = (float)this.direction - camtr.y; }
-			
+			float diff = camtr.y - (float)this.direction;
+			if (diff >= 180.0f) { diff = 360.0f - diff; }
+			if (diff <= -180.0f) { diff = 360.0f + diff;  }
 //			var diff = ((camtr.y + calibrationAngle) - this.direction) % 360.0;
 			if (diff > 120 || diff < -120) {
 				this.labelObject.SetActive(false);
@@ -153,7 +179,14 @@ namespace Aircraft {
 			targetBoxRt.localPosition = localPoint;
 		}
 
-		//calculate distance from camera position to aircraft 
+		/// <summary>
+		/// calculate distance from camera position to aircraft
+		/// </summary>
+		/// <param name="latitude1">Latitude of camera position</param>
+		/// <param name="longitude1">LOngitude of camera position</param>
+		/// <param name="latitude2">Latitude of aircraft position</param>
+		/// <param name="longitude2">Longitude of aircraft position</param>
+		/// <returns>distance (meters)</returns>		
 		public double getDistance(double latitude1, double longitude1, double latitude2, double longitude2) {
 			var lat1 = deg2rad(latitude1);
 			var lng1 = deg2rad(longitude1);
@@ -165,6 +198,9 @@ namespace Aircraft {
 			return r * 2 * System.Math.Asin(System.Math.Sqrt(System.Math.Pow(System.Math.Sin(avelat), 2) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * System.Math.Pow(System.Math.Sin(avelng), 2)));
 		}
 
+		/// <summary>
+		/// setup Aircraft information text on the textobject.
+		/// </summary>
 		public void setTextInfo() {
 			var uiText = this.labelObject.GetComponent<Text>();
 			var distanceText = string.Format("{0:####.##}km", this.distance / 1000.0);
@@ -178,7 +214,12 @@ namespace Aircraft {
 			}
 		}
 
-		//calculate direction from user's position to aircraft 
+		/// <summary>
+		/// calculate direction from user's position to aircraft 
+		/// </summary>
+		/// <param name="latitude">Latitude of aircraft</param>
+		/// <param name="longitude">Longitude of aircraft</param>
+		/// <returns>direction (degree)</returns>
 		public double getDirection(double latitude, double longitude) {
 			var y1 = deg2rad(this.originLatitude);
 			var x1 = deg2rad(this.originLongitude);
@@ -192,9 +233,20 @@ namespace Aircraft {
 			return ret;
 		}
 
+		/// <summary>
+		/// convert degrees to radians
+		/// </summary>
+		/// <param name="degree"></param>
+		/// <returns>radians value</returns>
 		public double deg2rad(double degree) {
 			return degree * System.Math.PI / 180.0;
 		}
+
+		/// <summary>
+		/// convert radians to degrees
+		/// </summary>
+		/// <param name="radian"></param>
+		/// <returns>degree value</returns>
 		public double rad2deg(double radian) {
 			return 180 * radian / System.Math.PI;
 		}
