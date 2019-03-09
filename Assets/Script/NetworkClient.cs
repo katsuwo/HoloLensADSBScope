@@ -11,13 +11,13 @@ using System;
 public class NetworkClient : MonoBehaviour {
 
 	Dictionary<string, Aircraft.Aircraft> aircrafts = new Dictionary<string, Aircraft.Aircraft>();
-	private double current_alt = 172;
+	private double current_alt = 0;
 	private double current_lat = 0.0;
 	private double current_lng = 0.0;
 	private double calibration_lat = 0.0;
 	private double calibration_lng = 0.0;
 	private GameObject myCanvas;
-	private int readTime = 0;
+	private double readTime = 0;
 	private float timeElapsed = 0.0f;
 	private float calibrationAngle = 0f;
 
@@ -39,7 +39,8 @@ public class NetworkClient : MonoBehaviour {
 	GameObject W_Object;
 
 	private int LINERESERVETIME = 5 * 60 * 60;
-	
+	private bool dataRequest = true;
+
 	void Start() {
 		//Destroy camera of Calibrate Scene
 		GameObject cam1 = GameObject.Find("MixedRealityCameraCalibrateScene");
@@ -70,12 +71,18 @@ public class NetworkClient : MonoBehaviour {
 
 		framCounter++;
 		timeElapsed += Time.deltaTime;
-		if (timeElapsed >= 0.5f) {
+#if true
+		if (this.dataRequest == true) {
+			StartCoroutine(RequestAircraftDatas(false));
+		}
+#else
+		if (timeElapsed >= 0.25f) {
 			StartCoroutine(RequestAircraftDatas(false));
 			timeElapsed = 0.0f;
 			Vector3 camPosition = Camera.main.transform.position;
 			ld.addStroke("CAMERA", new Vector3(camPosition.x, camPosition.y - 1, camPosition.z), new Color(0.5f, 0.5f, 0, 0.3f));
 		}
+#endif
 
 		List<string> deleteList = new List<string>();
 		foreach (KeyValuePair<string, Aircraft.Aircraft> kvp in aircrafts) {
@@ -107,6 +114,7 @@ public class NetworkClient : MonoBehaviour {
 	IEnumerator RequestAircraftDatas(bool dbClear) {
 		WWW request;
 		string url = "";
+		this.dataRequest = false;
 
 		if (dbClear == true) {
 			url = $"http://{SERVERADDRESS}:5000/clear";
@@ -117,6 +125,7 @@ public class NetworkClient : MonoBehaviour {
 			}
 			else {
 				url = $"http://{SERVERADDRESS}:5000/lastupdate/" + readTime;
+				//url = $"http://{SERVERADDRESS}:5000/all";
 			}
 		}
 		request = new WWW(url);
@@ -135,9 +144,11 @@ public class NetworkClient : MonoBehaviour {
 				var calibrations = (IDictionary)js["Calibration"];
 				var currentPos = (IDictionary)calibrations["currentPosition"];
 				var calibPos = (IDictionary)calibrations["calibratePosition"];
-				this.readTime = int.Parse((string)js["ReadTime"]);
+				this.readTime = double.Parse((string)js["ReadTime"]);
 				current_lat = (double)currentPos["latitude"];
 				current_lng = (double)currentPos["longitude"];
+				current_alt = (double)currentPos["altitude"];
+				current_alt = 0.0;
 				calibration_lat = (double)calibPos["latitude"];
 				calibration_lng = (double)calibPos["longitude"];
 				this.calibrationAngle = (float)this.calibrateDirection();
@@ -185,7 +196,7 @@ public class NetworkClient : MonoBehaviour {
 				}
 			}
 		}
-	//	ld.OnRenderObject();
+		this.dataRequest = true;
 	}
 
 
