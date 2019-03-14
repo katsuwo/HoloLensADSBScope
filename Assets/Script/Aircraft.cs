@@ -206,7 +206,8 @@ namespace Aircraft {
 			var distanceText = string.Format("{0:####.##}km", this.distance / 1000.0);
 			var altText = string.Format("{0:#####.#}ft", this.altitude);
 			var csText = this.callsign.Replace("_", "");
-			this.text = $"{csText}\n{altText}:{distanceText}\n{this.icao}";
+			var gndText = (this.isOnGround == true) ? "GND:" : ""; 
+			this.text = $"{gndText}{csText}\n{altText}:{distanceText}\n{this.icao}";
 
 			if (this.text != this.oldText) {
 				uiText.text = this.text;

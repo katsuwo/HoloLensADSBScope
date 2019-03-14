@@ -6,8 +6,6 @@ using MiniJSON;
 using Aircraft;
 using System;
 
-
-
 public class NetworkClient : MonoBehaviour {
 
 	Dictionary<string, Aircraft.Aircraft> aircrafts = new Dictionary<string, Aircraft.Aircraft>();
@@ -61,18 +59,18 @@ public class NetworkClient : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		/*
-				if (isOpening == true) {
-					openningEffect();
-					return;
-				}
-		*/
-
+#if false
+		if (isOpening == true) {
+			openningEffect();
+			return;
+		}
+#endif
 
 		framCounter++;
 		timeElapsed += Time.deltaTime;
 #if true
 		if (this.dataRequest == true) {
+			Debug.Log("__REQ__");
 			StartCoroutine(RequestAircraftDatas(false));
 		}
 #else
@@ -124,8 +122,8 @@ public class NetworkClient : MonoBehaviour {
 				url = $"http://{SERVERADDRESS}:5000/all";
 			}
 			else {
-				url = $"http://{SERVERADDRESS}:5000/lastupdate/" + readTime;
-				//url = $"http://{SERVERADDRESS}:5000/all";
+			//	url = $"http://{SERVERADDRESS}:5000/lastupdate/" + readTime;
+				url = $"http://{SERVERADDRESS}:5000/all";
 			}
 		}
 		request = new WWW(url);
@@ -137,6 +135,7 @@ public class NetworkClient : MonoBehaviour {
 
 		else {
 			if (request.responseHeaders.ContainsKey("STATUS") && request.responseHeaders["STATUS"].Contains("200")) {
+				Debug.Log("__RCV__");
 				string text = request.text;
 				IDictionary js = (IDictionary)Json.Deserialize(text);
 
@@ -157,31 +156,32 @@ public class NetworkClient : MonoBehaviour {
 				var items = (IDictionary)js["Items"];
 				var keys = items.Keys;
 				foreach (KeyValuePair<string, object> kvp in items as Dictionary<string, object>) {
-					var tmpDic = (IDictionary)Json.Deserialize(kvp.Value as string);
-					string icao = (string)tmpDic["icao"];
-					var tmpLatitude = (double)tmpDic["latitude"];
-					var tmpLongitude = (double)tmpDic["longitude"];
-					var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
-					var tmpCallsign = (string)tmpDic["callsign"];
-					if (tmpLatitude == 0.0 && tmpLongitude == 0.0 && tmpAltitude == 0.0) { continue; }
-					//				if (icao != "867592") continue;
-					if (!this.aircrafts.ContainsKey(icao)) {
-						var newac = new Aircraft.Aircraft();
-						newac.canvas = myCanvas;
-						newac.icao = icao;
-						newac.bodyObject = this.BuildBodyObject(icao);
-						newac.labelObject = this.BuildLabelObject(icao);
-						newac.targetBox = this.BuildTargetBox(icao);
-						aircrafts.Add(icao, newac);
-						ld.addStrokeSet(icao);
-					}
 
-					Aircraft.Aircraft ac = this.aircrafts[icao];
 					try {
+						var tmpDic = (IDictionary)Json.Deserialize(kvp.Value as string);
+						string icao = (string)tmpDic["icao"];
+						var tmpLatitude = (double)tmpDic["latitude"];
+						var tmpLongitude = (double)tmpDic["longitude"];
+						var tmpAltitude = double.Parse((string)tmpDic["altitude"]);
+						var tmpCallsign = (string)tmpDic["callsign"];
+						var tmpOnGround = (bool)tmpDic["onGround"];
+						if (tmpLatitude == 0.0 && tmpLongitude == 0.0 && tmpAltitude == 0.0) { continue; }
+						if (!this.aircrafts.ContainsKey(icao)) {
+							var newac = new Aircraft.Aircraft();
+							newac.canvas = myCanvas;
+							newac.icao = icao;
+							newac.bodyObject = this.BuildBodyObject(icao);
+							newac.labelObject = this.BuildLabelObject(icao);
+							newac.targetBox = this.BuildTargetBox(icao);
+							aircrafts.Add(icao, newac);
+							ld.addStrokeSet(icao);
+						}
+						Aircraft.Aircraft ac = this.aircrafts[icao];
 						ac.calibrationAngle = this.calibrationAngle;
 						ac.setOriginPointWithCoordinate(current_lat, current_lng, current_alt);
 						ac.updateTimestamp = (int)(double)tmpDic["update_time_stamp"];
 						ac.callsign = tmpCallsign;
+						ac.isOnGround = tmpOnGround;
 						bool isMoved = ac.setPositionWithCoordinate(tmpLatitude, tmpLongitude, tmpAltitude);
 						ac.setTextInfo();
 						if (isMoved == true) {
@@ -189,9 +189,7 @@ public class NetworkClient : MonoBehaviour {
 						}
 					}
 					catch (System.InvalidCastException e) {
-						ac.latitude = 0;
-						ac.longitude = 0;
-						ac.altitude = 0;
+						continue;
 					}
 				}
 			}

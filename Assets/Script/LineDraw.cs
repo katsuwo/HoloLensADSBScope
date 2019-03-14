@@ -64,6 +64,8 @@ public  class LineDraw : MonoBehaviour {
 	public void addStrokeSet(string icao) {
 		List<Vector3> pointList = new List<Vector3>();
 		List<Color> colorList = new List<Color>();
+		if (strokeSet.ContainsKey(icao)) { this.removeStrokeSet(icao); }
+		if (colorSet.ContainsKey(icao)) { colorSet.Remove(icao); }
 		strokeSet.Add(icao, pointList);
 		colorSet.Add(icao, colorList);
 	}
